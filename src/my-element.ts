@@ -1,8 +1,8 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import litLogo from './assets/lit.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import litLogo from "./assets/lit.svg";
+import viteLogo from "./assets/vite.svg";
+import heroImg from "./assets/hero.png";
 
 /**
  * An example element.
@@ -10,13 +10,13 @@ import heroImg from './assets/hero.png'
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('my-element')
+@customElement("my-element")
 export class MyElement extends LitElement {
   /**
    * The number of times the button has been clicked.
    */
   @property({ type: Number })
-  count = 0
+  count = 0;
 
   render() {
     return html`
@@ -107,11 +107,11 @@ export class MyElement extends LitElement {
 
       <div class="ticks"></div>
       <section id="spacer"></section>
-    `
+    `;
   }
 
   private _onClick() {
-    this.count++
+    this.count++;
   }
 
   static styles = css`
@@ -128,8 +128,8 @@ export class MyElement extends LitElement {
       --shadow:
         rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-      --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-      --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+      --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+      --heading: system-ui, "Segoe UI", Roboto, sans-serif;
       --mono: ui-monospace, Consolas, monospace;
 
       font: 18px/145% var(--sans);
@@ -350,7 +350,7 @@ export class MyElement extends LitElement {
 
     .ticks::before,
     .ticks::after {
-      content: '';
+      content: "";
       position: absolute;
       top: -4.5px;
       border: 5px solid transparent;
@@ -423,11 +423,11 @@ export class MyElement extends LitElement {
         height: 48px;
       }
     }
-  `
+  `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement
+    "my-element": MyElement;
   }
 }

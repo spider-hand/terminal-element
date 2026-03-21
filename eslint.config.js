@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 import css from "@eslint/css";
 import { defineConfig } from "eslint/config";
 import eslintPluginLit from "eslint-plugin-lit";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
   {
@@ -14,6 +15,7 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   eslintPluginLit.configs["flat/recommended"],
+  eslintConfigPrettier,
   {
     files: ["**/*.css"],
     plugins: { css },
