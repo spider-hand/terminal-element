@@ -48,7 +48,7 @@
     "vitest-browser-lit": "^1.0.1"
   },
   "lint-staged": {
-    "*.{js,ts}": "eslint --fix",
+    "*.{js,ts}": ["eslint --fix", "prettier --write"],
     "*.ts": "stylelint --fix"
   }
 }
