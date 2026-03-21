@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "dependencies": {
     "lit": "^3.3.2"
@@ -20,9 +21,19 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-lit": "^2.2.1",
     "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "postcss-lit": "^1.4.1",
     "prettier": "^3.8.1",
+    "stylelint": "^17.5.0",
+    "stylelint-config-recess-order": "^7.7.0",
+    "stylelint-config-standard": "^40.0.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.1",
     "vite": "^8.0.1"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --fix",
+    "*.ts": "stylelint --fix"
   }
 }
