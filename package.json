@@ -12,7 +12,8 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:browser": "vitest --config=vitest.browser.config.ts"
+    "test": "vitest --config=vitest.browser.config.ts",
+    "test:coverage": "vitest run --config=vitest.browser.config.ts --coverage"
   },
   "dependencies": {
     "lit": "^3.3.2"
