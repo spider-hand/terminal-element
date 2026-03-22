@@ -7,7 +7,7 @@ type ThemeType = "light" | "dark";
 export class TerminalElement extends LitElement {
   @property({ type: String }) width = "600px";
   @property({ type: String }) height = "360px";
-  @property({ type: String }) theme: ThemeType = "dark";
+  @property({ type: String, reflect: true }) theme: ThemeType = "dark";
   @property({ type: String }) currentDirectory = "";
   @property({ type: String }) content = "";
 
@@ -16,6 +16,66 @@ export class TerminalElement extends LitElement {
       display: block;
       width: fit-content;
       height: fit-content;
+
+      /** UI colors */
+      --terminal-element-border-color: #070707;
+      --terminal-element-header-bg: #323232;
+      --terminal-element-header-border: #6a6a6a;
+      --terminal-element-header-border-bottom: #6a6a6a;
+      --terminal-element-header-directory-color: #afafb4;
+      --terminal-element-body-bg: #101317;
+      --terminal-element-body-border: #606060;
+      --terminal-element-body-content-color: #d4d4d4;
+      --terminal-element-caret-color: #fff;
+
+      /** ANSI colors */
+      --terminal-element-ansi-black: #14191e;
+      --terminal-element-ansi-black-bright: #676767;
+      --terminal-element-ansi-red: #b43c29;
+      --terminal-element-ansi-red-bright: #dc7974;
+      --terminal-element-ansi-green: #00c200;
+      --terminal-element-ansi-green-bright: #57e690;
+      --terminal-element-ansi-yellow: #c7c400;
+      --terminal-element-ansi-yellow-bright: #ece100;
+      --terminal-element-ansi-blue: #2743c7;
+      --terminal-element-ansi-blue-bright: #a6aaf1;
+      --terminal-element-ansi-magenta: #bf3fbd;
+      --terminal-element-ansi-magenta-bright: #e07de0;
+      --terminal-element-ansi-cyan: #00c5c7;
+      --terminal-element-ansi-cyan-bright: #5ffdff;
+      --terminal-element-ansi-white: #c7c7c7;
+      --terminal-element-ansi-white-bright: #feffff;
+    }
+
+    :host([theme="light"]) {
+      /** UI colors */
+      --terminal-element-border-color: #cdcdcd;
+      --terminal-element-header-bg: #f4f4f8;
+      --terminal-element-header-border: #f1f1f4;
+      --terminal-element-header-border-bottom: #dfdfdf;
+      --terminal-element-header-directory-color: #393939;
+      --terminal-element-body-bg: #fff;
+      --terminal-element-body-border: transparent;
+      --terminal-element-body-content-color: #0c0c0c;
+      --terminal-element-caret-color: #808080;
+
+      /** ANSI colors */
+      --terminal-element-ansi-black: #000;
+      --terminal-element-ansi-black-bright: #808080;
+      --terminal-element-ansi-red: #900;
+      --terminal-element-ansi-red-bright: #e60000;
+      --terminal-element-ansi-green: #00a600;
+      --terminal-element-ansi-green-bright: #00d900;
+      --terminal-element-ansi-yellow: #990;
+      --terminal-element-ansi-yellow-bright: #e6e600;
+      --terminal-element-ansi-blue: #0000b2;
+      --terminal-element-ansi-blue-bright: #00f;
+      --terminal-element-ansi-magenta: #b200b2;
+      --terminal-element-ansi-magenta-bright: #e600e6;
+      --terminal-element-ansi-cyan: #00a6b2;
+      --terminal-element-ansi-cyan-bright: #00e6e6;
+      --terminal-element-ansi-white: #bfbfbf;
+      --terminal-element-ansi-white-bright: #e6e6e6;
     }
 
     * {
@@ -27,7 +87,7 @@ export class TerminalElement extends LitElement {
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 1px solid #070707;
+      border: 1px solid var(--terminal-element-border-color);
       border-radius: 10px;
       box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
     }
@@ -39,10 +99,11 @@ export class TerminalElement extends LitElement {
       justify-content: center;
       height: 28px;
       padding: 0 16px;
-      background-color: #323232;
-      border-top: 1px solid #6a6a6a;
-      border-right: 1px solid #6a6a6a;
-      border-left: 1px solid #6a6a6a;
+      background-color: var(--terminal-element-header-bg);
+      border-top: 1px solid var(--terminal-element-header-border);
+      border-right: 1px solid var(--terminal-element-header-border);
+      border-bottom: 1px solid var(--terminal-element-header-border-bottom);
+      border-left: 1px solid var(--terminal-element-header-border);
     }
 
     .terminal-element__header-controls {
@@ -74,49 +135,26 @@ export class TerminalElement extends LitElement {
     .terminal-element__header-directory {
       font-size: 12px;
       font-weight: 600;
-      color: #afafb4;
+      color: var(--terminal-element-header-directory-color);
     }
 
     .terminal-element__body {
       flex: 1;
       padding: 4px;
-      background-color: #101317;
-      border-right: solid 1px #606060;
-      border-bottom: solid 1px #606060;
-      border-left: solid 1px #606060;
+      background-color: var(--terminal-element-body-bg);
+      border-right: solid 1px var(--terminal-element-body-border);
+      border-bottom: solid 1px var(--terminal-element-body-border);
+      border-left: solid 1px var(--terminal-element-body-border);
     }
 
     .terminal-element__body-content {
       font-size: 12px;
       font-weight: 400;
-      color: #d4d4d4;
+      color: var(--terminal-element-body-content-color);
     }
 
-    .terminal-element[data-theme="light"] {
-      border: 1px solid #cdcdcd;
-    }
-
-    .terminal-element[data-theme="light"] .terminal-element__header {
-      background-color: #f4f4f8;
-      border-top: 1px solid #f1f1f4;
-      border-right: 1px solid #f1f1f4;
-      border-bottom: 1px solid #dfdfdf;
-      border-left: 1px solid #f1f1f4;
-    }
-
-    .terminal-element[data-theme="light"] .terminal-element__header-directory {
-      color: #393939;
-    }
-
-    .terminal-element[data-theme="light"] .terminal-element__body {
-      background-color: #fff;
-      border-right: none;
-      border-bottom: none;
-      border-left: none;
-    }
-
-    .terminal-element[data-theme="light"] .terminal-element__body-content {
-      color: #0c0c0c;
+    .terminal-element__body-caret {
+      background-color: var(--terminal-element-caret-color);
     }
   `;
 
@@ -125,7 +163,6 @@ export class TerminalElement extends LitElement {
       <div
         class="terminal-element"
         style="width: ${this.width}; height: ${this.height};"
-        data-theme=${this.theme}
         data-testid="terminal-element"
       >
         <div class="terminal-element__header">
