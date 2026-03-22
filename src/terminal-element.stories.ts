@@ -13,7 +13,7 @@ const meta = {
     theme: "dark",
     currentDirectory: "~/project",
     prompt: "$",
-    content: "Hello, world!",
+    content: [],
   },
   argTypes: {
     width: { control: "text" },
@@ -21,7 +21,7 @@ const meta = {
     theme: { control: "select", options: ["dark", "light"] },
     currentDirectory: { control: "text" },
     prompt: { control: "text" },
-    content: { control: "text" },
+    content: { control: "object" },
   },
 } satisfies Meta<TerminalElementProps>;
 
@@ -34,11 +34,197 @@ export const Default: Story = {};
 export const Dark: Story = {
   args: {
     theme: "dark",
+    content: [
+      { type: "input", text: "pnpm run dev" },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [{ text: "> terminal-element@0.0.0 dev /Users/..." }],
+      },
+      { type: "output", segments: [{ text: "> vite" }] },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [{ text: "Port 5173 is in use, trying another one..." }],
+      },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [
+          {
+            text: "    VITE",
+            color: "var(--terminal-element-ansi-green-bright)",
+            highlight: true,
+          },
+          {
+            text: " v8.0.1",
+            color: "var(--terminal-element-ansi-green-bright)",
+          },
+          {
+            text: "  ready in",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          { text: " 100", highlight: true },
+          { text: " ms" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "   Local:", highlight: true },
+          {
+            text: " http://localhost:",
+            color: "var(--terminal-element-ansi-cyan-bright)",
+          },
+          {
+            text: "5174",
+            color: "var(--terminal-element-ansi-cyan-bright)",
+            highlight: true,
+          },
+          { text: "/", color: "var(--terminal-element-ansi-cyan-bright)" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          {
+            text: "   Network:",
+            color: "var(--terminal-element-ansi-black-bright)",
+            highlight: true,
+          },
+          {
+            text: " use",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          {
+            text: " --host",
+            highlight: true,
+          },
+          {
+            text: " to expose",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          {
+            text: "   press",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          {
+            text: " h + enter",
+            highlight: true,
+          },
+          {
+            text: " to show help",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+        ],
+      },
+    ],
   },
 };
 
 export const Light: Story = {
   args: {
     theme: "light",
+    content: [
+      { type: "input", text: "pnpm run dev" },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [{ text: "> terminal-element@0.0.0 dev /Users/..." }],
+      },
+      { type: "output", segments: [{ text: "> vite" }] },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [{ text: "Port 5173 is in use, trying another one..." }],
+      },
+      { type: "output", segments: [] },
+      {
+        type: "output",
+        segments: [
+          {
+            text: "    VITE",
+            color: "var(--terminal-element-ansi-green)",
+            highlight: true,
+          },
+          {
+            text: " v8.0.1",
+            color: "var(--terminal-element-ansi-green)",
+          },
+          {
+            text: "  ready in",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          { text: " 100", highlight: true },
+          { text: " ms" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "   Local:", highlight: true },
+          {
+            text: " http://localhost:",
+            color: "var(--terminal-element-ansi-cyan)",
+          },
+          {
+            text: "5174",
+            color: "var(--terminal-element-ansi-cyan)",
+            highlight: true,
+          },
+          { text: "/", color: "var(--terminal-element-ansi-cyan)" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
+          {
+            text: "   Network:",
+            color: "var(--terminal-element-ansi-black-bright)",
+            highlight: true,
+          },
+          {
+            text: " use",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          {
+            text: " --host",
+            highlight: true,
+          },
+          {
+            text: " to expose",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
+          {
+            text: "   press",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+          {
+            text: " h + enter",
+            highlight: true,
+          },
+          {
+            text: " to show help",
+            color: "var(--terminal-element-ansi-black-bright)",
+          },
+        ],
+      },
+    ],
   },
 };

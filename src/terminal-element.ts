@@ -3,13 +3,29 @@ import { customElement, property } from "lit/decorators.js";
 
 type ThemeType = "light" | "dark";
 
+type Segment = {
+  text: string;
+  color?: string;
+  highlight?: boolean;
+};
+
+type Line =
+  | {
+      type: "input";
+      text: string;
+    }
+  | {
+      type: "output";
+      segments: Segment[];
+    };
+
 export interface TerminalElementProps {
   width?: string;
   height?: string;
   theme?: ThemeType;
   currentDirectory?: string;
   prompt?: string;
-  content?: string;
+  content?: Line[];
 }
 
 @customElement("terminal-element")
@@ -19,7 +35,7 @@ export class TerminalElement extends LitElement {
   @property({ type: String, reflect: true }) theme: ThemeType = "dark";
   @property({ type: String }) currentDirectory = "";
   @property({ type: String }) prompt = "$";
-  @property({ type: String }) content = "";
+  @property({ type: Array }) content: Line[] = [];
 
   static styles = css`
     :host {
@@ -163,6 +179,10 @@ export class TerminalElement extends LitElement {
       color: var(--terminal-element-body-content-color);
     }
 
+    .terminal-element__body-line {
+      white-space: pre;
+    }
+
     .terminal-element__body-caret {
       background-color: var(--terminal-element-caret-color);
     }
@@ -196,7 +216,22 @@ export class TerminalElement extends LitElement {
         </div>
         <div class="terminal-element__body">
           <div class="terminal-element__body-content" data-testid="content">
-            ${this.prompt} ${this.content}
+            ${this.content.map((line) => {
+              if (line.type === "input") {
+                // prettier-ignore
+                // to prevent the formatter from breaking the template literal
+                return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
+              } else if (line.type === "output") {
+                // prettier-ignore
+                // to prevent the formatter from breaking the template literal
+                return html`<div class="terminal-element__body-line">${line.segments.length === 0
+                    ? html`&nbsp;`
+                    : line.segments.map(
+                        (segment) =>
+                          html`<span style="color: ${segment.color ?? "inherit"}; font-weight: ${segment.highlight ? "bold" : "normal"}">${segment.text}</span>`,
+                      )}</div>`;
+              }
+            })}
           </div>
         </div>
       </div>
