@@ -1,30 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
-import { html } from "lit";
 
 import "./terminal-element";
-
-interface Args {
-  width: string;
-  height: string;
-  theme: "dark" | "light";
-  currentDirectory: string;
-  prompt: string;
-  content: string;
-}
+import type { TerminalElementProps } from "./terminal-element";
 
 const meta = {
-  title: "Components/TerminalElement",
+  title: "TerminalElement",
+  component: "terminal-element",
   tags: ["autodocs"],
-  render: (args: Args) => html`
-    <terminal-element
-      width=${args.width}
-      height=${args.height}
-      theme=${args.theme}
-      currentDirectory=${args.currentDirectory}
-      prompt=${args.prompt}
-      content=${args.content}
-    ></terminal-element>
-  `,
   args: {
     width: "600px",
     height: "360px",
@@ -41,11 +23,11 @@ const meta = {
     prompt: { control: "text" },
     content: { control: "text" },
   },
-} satisfies Meta<Args>;
+} satisfies Meta<TerminalElementProps>;
 
 export default meta;
 
-type Story = StoryObj<Args>;
+type Story = StoryObj<TerminalElementProps>;
 
 export const Default: Story = {};
 

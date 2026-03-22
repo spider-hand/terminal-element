@@ -3,6 +3,15 @@ import { customElement, property } from "lit/decorators.js";
 
 type ThemeType = "light" | "dark";
 
+export interface TerminalElementProps {
+  width?: string;
+  height?: string;
+  theme?: ThemeType;
+  currentDirectory?: string;
+  prompt?: string;
+  content?: string;
+}
+
 @customElement("terminal-element")
 export class TerminalElement extends LitElement {
   @property({ type: String }) width = "600px";
