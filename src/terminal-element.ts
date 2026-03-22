@@ -9,6 +9,7 @@ export class TerminalElement extends LitElement {
   @property({ type: String }) height = "360px";
   @property({ type: String, reflect: true }) theme: ThemeType = "dark";
   @property({ type: String }) currentDirectory = "";
+  @property({ type: String }) prompt = "$";
   @property({ type: String }) content = "";
 
   static styles = css`
@@ -186,7 +187,7 @@ export class TerminalElement extends LitElement {
         </div>
         <div class="terminal-element__body">
           <div class="terminal-element__body-content" data-testid="content">
-            ${this.content}
+            ${this.prompt} ${this.content}
           </div>
         </div>
       </div>

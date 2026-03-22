@@ -8,6 +8,7 @@ interface Args {
   height: string;
   theme: "dark" | "light";
   currentDirectory: string;
+  prompt: string;
   content: string;
 }
 
@@ -20,6 +21,7 @@ const meta = {
       height=${args.height}
       theme=${args.theme}
       currentDirectory=${args.currentDirectory}
+      prompt=${args.prompt}
       content=${args.content}
     ></terminal-element>
   `,
@@ -28,6 +30,7 @@ const meta = {
     height: "360px",
     theme: "dark",
     currentDirectory: "~/project",
+    prompt: "$",
     content: "Hello, world!",
   },
   argTypes: {
@@ -35,6 +38,7 @@ const meta = {
     height: { control: "text" },
     theme: { control: "select", options: ["dark", "light"] },
     currentDirectory: { control: "text" },
+    prompt: { control: "text" },
     content: { control: "text" },
   },
 } satisfies Meta<Args>;

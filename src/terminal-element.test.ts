@@ -38,13 +38,13 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("~/project");
   });
 
-  it("renders the content", async () => {
+  it("renders the prompt and the content", async () => {
     const screen = render(
       html`<terminal-element content="Hello, World!"></terminal-element>`,
     );
 
     const element = screen.getByTestId("content");
 
-    await expect.element(element).toHaveTextContent("Hello, World!");
+    await expect.element(element).toHaveTextContent("$ Hello, World!");
   });
 });
