@@ -91,6 +91,33 @@ export class TerminalElement extends LitElement {
       font-weight: 400;
       color: #d4d4d4;
     }
+
+    .terminal-element[data-theme="light"] {
+      border: 1px solid #cdcdcd;
+    }
+
+    .terminal-element[data-theme="light"] .terminal-element__header {
+      background-color: #f4f4f8;
+      border-top: 1px solid #f1f1f4;
+      border-right: 1px solid #f1f1f4;
+      border-bottom: 1px solid #dfdfdf;
+      border-left: 1px solid #f1f1f4;
+    }
+
+    .terminal-element[data-theme="light"] .terminal-element__header-directory {
+      color: #393939;
+    }
+
+    .terminal-element[data-theme="light"] .terminal-element__body {
+      background-color: #fff;
+      border-right: none;
+      border-bottom: none;
+      border-left: none;
+    }
+
+    .terminal-element[data-theme="light"] .terminal-element__body-content {
+      color: #0c0c0c;
+    }
   `;
 
   render() {
@@ -98,6 +125,7 @@ export class TerminalElement extends LitElement {
       <div
         class="terminal-element"
         style="width: ${this.width}; height: ${this.height};"
+        data-theme=${this.theme}
         data-testid="terminal-element"
       >
         <div class="terminal-element__header">
