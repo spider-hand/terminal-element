@@ -3,14 +3,56 @@ import { html } from "lit";
 
 import "./terminal-element";
 
+interface Args {
+  width: string;
+  height: string;
+  theme: "dark" | "light";
+  currentDirectory: string;
+  content: string;
+}
+
 const meta = {
   title: "Components/TerminalElement",
   tags: ["autodocs"],
-  render: () => html`<terminal-element></terminal-element>`,
-} satisfies Meta;
+  render: (args: Args) => html`
+    <terminal-element
+      width=${args.width}
+      height=${args.height}
+      theme=${args.theme}
+      currentDirectory=${args.currentDirectory}
+      content=${args.content}
+    ></terminal-element>
+  `,
+  args: {
+    width: "600px",
+    height: "360px",
+    theme: "dark",
+    currentDirectory: "~/project",
+    content: "Hello, world!",
+  },
+  argTypes: {
+    width: { control: "text" },
+    height: { control: "text" },
+    theme: { control: "select", options: ["dark", "light"] },
+    currentDirectory: { control: "text" },
+    content: { control: "text" },
+  },
+} satisfies Meta<Args>;
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Args>;
 
 export const Default: Story = {};
+
+export const Dark: Story = {
+  args: {
+    theme: "dark",
+  },
+};
+
+export const Light: Story = {
+  args: {
+    theme: "light",
+  },
+};
