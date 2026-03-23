@@ -26,15 +26,22 @@ type Segment = {
   color?: AnsiColorType;
 };
 
-type Line =
-  | {
-      type: "input";
-      text: string;
-    }
-  | {
-      type: "output";
-      segments: Segment[];
-    };
+type InputLine = {
+  type: "input";
+  text: string;
+};
+
+type OutputLineText = {
+  type: "output";
+  text: string;
+};
+
+type OutputLineSegments = {
+  type: "output";
+  segments: Segment[];
+};
+
+type Line = InputLine | OutputLineText | OutputLineSegments;
 
 export interface TerminalElementProps {
   width?: string;
@@ -242,12 +249,16 @@ export class TerminalElement extends LitElement {
               } else if (line.type === "output") {
                 // prettier-ignore
                 // to prevent the formatter from breaking the template literal
-                return html`<div class="terminal-element__body-line">${line.segments.length === 0
+                if ("text" in line) {
+                  return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
+                } else {
+                  return html`<div class="terminal-element__body-line">${line.segments.length === 0
                     ? html`&nbsp;`
                     : line.segments.map(
                         (segment) =>
                           html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
                       )}</div>`;
+                }
               }
             })}
           </div>

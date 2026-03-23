@@ -64,13 +64,48 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("Output text");
   });
 
-  it("renders the line break for empty output line", async () => {
+  it("renders the content for output type line with text field", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[{ type: "output", text: "Plain output text" }] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+
+    await expect.element(element).toHaveTextContent("Plain output text");
+  });
+
+  it("renders the line break for empty output line with segments", async () => {
     const screen = render(
       html`<terminal-element
         .content=${[
           { type: "output", segments: [{ text: "Line 1" }] },
           { type: "output", segments: [] },
           { type: "output", segments: [{ text: "Line 3" }] },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    const lines = element
+      .element()
+      .querySelectorAll(".terminal-element__body-line");
+
+    expect(lines.length).toBe(3);
+    await expect.element(element).toHaveTextContent("Line 1");
+    await expect.element(element).toHaveTextContent("Line 3");
+  });
+
+  it("renders the line break for empty output line with text field", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", text: "Line 1" },
+          { type: "output", text: "" },
+          { type: "output", text: "Line 3" },
         ] as const}
       ></terminal-element>`,
     );

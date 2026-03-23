@@ -36,29 +36,17 @@ export const Dark: Story = {
     theme: "dark",
     content: [
       { type: "input", text: "pnpm run dev" },
-      { type: "output", segments: [] },
-      {
-        type: "output",
-        segments: [{ text: "> terminal-element@0.0.0 dev /Users/..." }],
-      },
-      { type: "output", segments: [{ text: "> vite" }] },
-      { type: "output", segments: [] },
-      {
-        type: "output",
-        segments: [{ text: "Port 5173 is in use, trying another one..." }],
-      },
-      { type: "output", segments: [] },
+      { type: "output", text: "" },
+      { type: "output", text: "> terminal-element@0.0.0 dev /Users/..." },
+      { type: "output", text: "> vite" },
+      { type: "output", text: "" },
+      { type: "output", text: "Port 5173 is in use, trying another one..." },
+      { type: "output", text: "" },
       {
         type: "output",
         segments: [
-          {
-            text: "  VITE v8.0.1",
-            color: "green-bright",
-          },
-          {
-            text: "  ready in",
-            color: "black-bright",
-          },
+          { text: "  VITE v8.0.1", color: "green-bright" },
+          { text: "  ready in", color: "black-bright" },
           { text: " 100 ms" },
         ],
       },
@@ -67,44 +55,25 @@ export const Dark: Story = {
         segments: [
           { text: "  ➜", color: "green-bright" },
           { text: "  Local:" },
-          {
-            text: "   http://localhost:5174/",
-            color: "cyan-bright",
-          },
+          { text: "   http://localhost:5174/", color: "cyan-bright" },
         ],
       },
       {
         type: "output",
         segments: [
           { text: "  ➜", color: "green-bright" },
-          {
-            text: "  Network: use",
-            color: "black-bright",
-          },
-          {
-            text: " --host",
-          },
-          {
-            text: " to expose",
-            color: "black-bright",
-          },
+          { text: "  Network: use", color: "black-bright" },
+          { text: " --host" },
+          { text: " to expose", color: "black-bright" },
         ],
       },
       {
         type: "output",
         segments: [
           { text: "  ➜", color: "green-bright" },
-          {
-            text: "  press",
-            color: "black-bright",
-          },
-          {
-            text: " h + enter",
-          },
-          {
-            text: " to show help",
-            color: "black-bright",
-          },
+          { text: "  press", color: "black-bright" },
+          { text: " h + enter" },
+          { text: " to show help", color: "black-bright" },
         ],
       },
     ],
@@ -116,29 +85,17 @@ export const Light: Story = {
     theme: "light",
     content: [
       { type: "input", text: "pnpm run dev" },
-      { type: "output", segments: [] },
-      {
-        type: "output",
-        segments: [{ text: "> terminal-element@0.0.0 dev /Users/..." }],
-      },
-      { type: "output", segments: [{ text: "> vite" }] },
-      { type: "output", segments: [] },
-      {
-        type: "output",
-        segments: [{ text: "Port 5173 is in use, trying another one..." }],
-      },
-      { type: "output", segments: [] },
+      { type: "output", text: "" },
+      { type: "output", text: "> terminal-element@0.0.0 dev /Users/..." },
+      { type: "output", text: "> vite" },
+      { type: "output", text: "" },
+      { type: "output", text: "Port 5173 is in use, trying another one..." },
+      { type: "output", text: "" },
       {
         type: "output",
         segments: [
-          {
-            text: "  VITE v8.0.1",
-            color: "green",
-          },
-          {
-            text: "  ready in",
-            color: "black-bright",
-          },
+          { text: "  VITE v8.0.1", color: "green" },
+          { text: "  ready in", color: "black-bright" },
           { text: " 100 ms" },
         ],
       },
@@ -147,44 +104,25 @@ export const Light: Story = {
         segments: [
           { text: "  ➜", color: "green" },
           { text: "  Local:" },
-          {
-            text: "   http://localhost:5174/",
-            color: "cyan",
-          },
+          { text: "   http://localhost:5174/", color: "cyan" },
         ],
       },
       {
         type: "output",
         segments: [
           { text: "  ➜", color: "green" },
-          {
-            text: "  Network: use",
-            color: "black-bright",
-          },
-          {
-            text: " --host",
-          },
-          {
-            text: " to expose",
-            color: "black-bright",
-          },
+          { text: "  Network: use", color: "black-bright" },
+          { text: " --host" },
+          { text: " to expose", color: "black-bright" },
         ],
       },
       {
         type: "output",
         segments: [
           { text: "  ➜", color: "green" },
-          {
-            text: "  press",
-            color: "black-bright",
-          },
-          {
-            text: " h + enter",
-          },
-          {
-            text: " to show help",
-            color: "black-bright",
-          },
+          { text: "  press", color: "black-bright" },
+          { text: " h + enter" },
+          { text: " to show help", color: "black-bright" },
         ],
       },
     ],
