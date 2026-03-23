@@ -87,7 +87,7 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("Line 3");
   });
 
-  it("renders the content with color and highlight", async () => {
+  it("renders the content with color", async () => {
     const screen = render(
       html`<terminal-element
         .content=${[
@@ -95,7 +95,7 @@ describe("terminal-element", () => {
             type: "output",
             segments: [
               { text: "colored", color: "var(--terminal-element-ansi-red)" },
-              { text: "bold", highlight: true },
+              { text: "normal" },
             ],
           },
         ] as const}
@@ -107,7 +107,7 @@ describe("terminal-element", () => {
 
     const spans = element.element().querySelectorAll("span");
 
-    expect(spans[0]).not.toHaveStyle({ color: "inherit" });
-    expect(spans[1]).toHaveStyle({ fontWeight: "700" });
+    expect(spans[0]).toHaveStyle({ color: "rgb(180, 60, 41)" });
+    expect(spans[1]).toHaveStyle({ color: "rgb(212, 212, 212)" });
   });
 });

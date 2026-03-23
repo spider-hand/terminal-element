@@ -52,55 +52,37 @@ export const Dark: Story = {
         type: "output",
         segments: [
           {
-            text: "    VITE",
-            color: "var(--terminal-element-ansi-green-bright)",
-            highlight: true,
-          },
-          {
-            text: " v8.0.1",
+            text: "  VITE v8.0.1",
             color: "var(--terminal-element-ansi-green-bright)",
           },
           {
             text: "  ready in",
             color: "var(--terminal-element-ansi-black-bright)",
           },
-          { text: " 100", highlight: true },
-          { text: " ms" },
+          { text: " 100 ms" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
-          { text: "   Local:", highlight: true },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  Local:" },
           {
-            text: " http://localhost:",
+            text: "   http://localhost:5174/",
             color: "var(--terminal-element-ansi-cyan-bright)",
           },
-          {
-            text: "5174",
-            color: "var(--terminal-element-ansi-cyan-bright)",
-            highlight: true,
-          },
-          { text: "/", color: "var(--terminal-element-ansi-cyan-bright)" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
           {
-            text: "   Network:",
-            color: "var(--terminal-element-ansi-black-bright)",
-            highlight: true,
-          },
-          {
-            text: " use",
+            text: "  Network: use",
             color: "var(--terminal-element-ansi-black-bright)",
           },
           {
             text: " --host",
-            highlight: true,
           },
           {
             text: " to expose",
@@ -111,14 +93,13 @@ export const Dark: Story = {
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
           {
-            text: "   press",
+            text: "  press",
             color: "var(--terminal-element-ansi-black-bright)",
           },
           {
             text: " h + enter",
-            highlight: true,
           },
           {
             text: " to show help",
@@ -151,55 +132,37 @@ export const Light: Story = {
         type: "output",
         segments: [
           {
-            text: "    VITE",
-            color: "var(--terminal-element-ansi-green)",
-            highlight: true,
-          },
-          {
-            text: " v8.0.1",
+            text: "  VITE v8.0.1",
             color: "var(--terminal-element-ansi-green)",
           },
           {
             text: "  ready in",
             color: "var(--terminal-element-ansi-black-bright)",
           },
-          { text: " 100", highlight: true },
-          { text: " ms" },
+          { text: " 100 ms" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
-          { text: "   Local:", highlight: true },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  Local:" },
           {
-            text: " http://localhost:",
+            text: "   http://localhost:5174/",
             color: "var(--terminal-element-ansi-cyan)",
           },
-          {
-            text: "5174",
-            color: "var(--terminal-element-ansi-cyan)",
-            highlight: true,
-          },
-          { text: "/", color: "var(--terminal-element-ansi-cyan)" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
           {
-            text: "   Network:",
-            color: "var(--terminal-element-ansi-black-bright)",
-            highlight: true,
-          },
-          {
-            text: " use",
+            text: "  Network: use",
             color: "var(--terminal-element-ansi-black-bright)",
           },
           {
             text: " --host",
-            highlight: true,
           },
           {
             text: " to expose",
@@ -210,14 +173,13 @@ export const Light: Story = {
       {
         type: "output",
         segments: [
-          { text: "    ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
           {
-            text: "   press",
+            text: "  press",
             color: "var(--terminal-element-ansi-black-bright)",
           },
           {
             text: " h + enter",
-            highlight: true,
           },
           {
             text: " to show help",

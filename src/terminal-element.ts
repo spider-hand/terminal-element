@@ -6,7 +6,6 @@ type ThemeType = "light" | "dark";
 type Segment = {
   text: string;
   color?: string;
-  highlight?: boolean;
 };
 
 type Line =
@@ -174,7 +173,8 @@ export class TerminalElement extends LitElement {
     }
 
     .terminal-element__body-content {
-      font-size: 12px;
+      font-family: monospace;
+      font-size: 14px;
       font-weight: 400;
       color: var(--terminal-element-body-content-color);
     }
@@ -228,7 +228,7 @@ export class TerminalElement extends LitElement {
                     ? html`&nbsp;`
                     : line.segments.map(
                         (segment) =>
-                          html`<span style="color: ${segment.color ?? "inherit"}; font-weight: ${segment.highlight ? "bold" : "normal"}">${segment.text}</span>`,
+                          html`<span style="color: ${segment.color ?? "inherit"};">${segment.text}</span>`,
                       )}</div>`;
               }
             })}
