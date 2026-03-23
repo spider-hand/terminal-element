@@ -53,11 +53,11 @@ export const Dark: Story = {
         segments: [
           {
             text: "  VITE v8.0.1",
-            color: "var(--terminal-element-ansi-green-bright)",
+            color: "green-bright",
           },
           {
             text: "  ready in",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           { text: " 100 ms" },
         ],
@@ -65,45 +65,45 @@ export const Dark: Story = {
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  ➜", color: "green-bright" },
           { text: "  Local:" },
           {
             text: "   http://localhost:5174/",
-            color: "var(--terminal-element-ansi-cyan-bright)",
+            color: "cyan-bright",
           },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  ➜", color: "green-bright" },
           {
             text: "  Network: use",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           {
             text: " --host",
           },
           {
             text: " to expose",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green-bright)" },
+          { text: "  ➜", color: "green-bright" },
           {
             text: "  press",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           {
             text: " h + enter",
           },
           {
             text: " to show help",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
         ],
       },
@@ -133,11 +133,11 @@ export const Light: Story = {
         segments: [
           {
             text: "  VITE v8.0.1",
-            color: "var(--terminal-element-ansi-green)",
+            color: "green",
           },
           {
             text: "  ready in",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           { text: " 100 ms" },
         ],
@@ -145,45 +145,45 @@ export const Light: Story = {
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  ➜", color: "green" },
           { text: "  Local:" },
           {
             text: "   http://localhost:5174/",
-            color: "var(--terminal-element-ansi-cyan)",
+            color: "cyan",
           },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  ➜", color: "green" },
           {
             text: "  Network: use",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           {
             text: " --host",
           },
           {
             text: " to expose",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "var(--terminal-element-ansi-green)" },
+          { text: "  ➜", color: "green" },
           {
             text: "  press",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
           {
             text: " h + enter",
           },
           {
             text: " to show help",
-            color: "var(--terminal-element-ansi-black-bright)",
+            color: "black-bright",
           },
         ],
       },

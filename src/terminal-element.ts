@@ -3,9 +3,27 @@ import { customElement, property } from "lit/decorators.js";
 
 type ThemeType = "light" | "dark";
 
+type AnsiColorType =
+  | "black"
+  | "black-bright"
+  | "red"
+  | "red-bright"
+  | "green"
+  | "green-bright"
+  | "yellow"
+  | "yellow-bright"
+  | "blue"
+  | "blue-bright"
+  | "magenta"
+  | "magenta-bright"
+  | "cyan"
+  | "cyan-bright"
+  | "white"
+  | "white-bright";
+
 type Segment = {
   text: string;
-  color?: string;
+  color?: AnsiColorType;
 };
 
 type Line =
@@ -228,7 +246,7 @@ export class TerminalElement extends LitElement {
                     ? html`&nbsp;`
                     : line.segments.map(
                         (segment) =>
-                          html`<span style="color: ${segment.color ?? "inherit"};">${segment.text}</span>`,
+                          html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
                       )}</div>`;
               }
             })}

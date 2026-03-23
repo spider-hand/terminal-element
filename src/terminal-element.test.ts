@@ -93,10 +93,7 @@ describe("terminal-element", () => {
         .content=${[
           {
             type: "output",
-            segments: [
-              { text: "colored", color: "var(--terminal-element-ansi-red)" },
-              { text: "normal" },
-            ],
+            segments: [{ text: "colored", color: "red" }, { text: "normal" }],
           },
         ] as const}
       ></terminal-element>`,
