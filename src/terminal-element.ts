@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import type { PropertyValues } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 
 type ThemeType = "light" | "dark";
 
@@ -34,11 +35,13 @@ type InputLine = {
 type OutputLineText = {
   type: "output";
   text: string;
+  delay?: number;
 };
 
 type OutputLineSegments = {
   type: "output";
   segments: Segment[];
+  delay?: number;
 };
 
 type Line = InputLine | OutputLineText | OutputLineSegments;
@@ -50,6 +53,8 @@ export interface TerminalElementProps {
   currentDirectory?: string;
   prompt?: string;
   content?: Line[];
+  animated?: boolean;
+  typingSpeed?: number;
 }
 
 @customElement("terminal-element")
@@ -60,12 +65,22 @@ export class TerminalElement extends LitElement {
   @property({ type: String }) currentDirectory = "";
   @property({ type: String }) prompt = "$";
   @property({ type: Array }) content: Line[] = [];
+  @property({ type: Boolean }) animated = false;
+  @property({ type: Number }) typingSpeed = 100;
+
+  @state() private _currentLineIndex = 0;
+  @state() private _currentCharInLine = 0;
+  @state() private _isAnimating = false;
+
+  private _animationTimer: number | null = null;
 
   static styles = css`
     :host {
       display: block;
       width: fit-content;
       height: fit-content;
+
+      --terminal-element-font-size: 14px;
 
       /** UI colors */
       --terminal-element-border-color: #070707;
@@ -199,7 +214,7 @@ export class TerminalElement extends LitElement {
 
     .terminal-element__body-content {
       font-family: monospace;
-      font-size: 14px;
+      font-size: var(--terminal-element-font-size);
       font-weight: 400;
       color: var(--terminal-element-body-content-color);
     }
@@ -209,9 +224,181 @@ export class TerminalElement extends LitElement {
     }
 
     .terminal-element__body-caret {
+      display: inline-block;
+      width: 8px;
+      height: var(--terminal-element-font-size);
+      vertical-align: bottom;
       background-color: var(--terminal-element-caret-color);
     }
   `;
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.animated) {
+      this._startAnimation();
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._stopAnimation();
+  }
+
+  protected updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+
+    // Restart the animation when content changes while animated
+    if (
+      changedProperties.has("content") &&
+      this.animated &&
+      changedProperties.get("content") !== undefined
+    ) {
+      this._stopAnimation();
+      this._startAnimation();
+    }
+  }
+
+  private _startAnimation() {
+    this._currentLineIndex = 0;
+    this._currentCharInLine = 0;
+    this._isAnimating = true;
+    this._processCurrentLine();
+  }
+
+  private _processCurrentLine() {
+    if (this._currentLineIndex >= this.content.length) {
+      // Animation complete
+      this._isAnimating = false;
+      return;
+    }
+
+    const currentLine = this.content[this._currentLineIndex];
+
+    if (currentLine.type === "input") {
+      this._tickInputLine();
+    } else {
+      const delay = ("delay" in currentLine ? currentLine.delay : 0) ?? 0;
+      if (delay > 0) {
+        // Show the output line with a delay, then move to next line
+        this._animationTimer = setTimeout(() => {
+          this._moveToNextLine();
+        }, delay);
+      } else {
+        // Show the output line immediately and move to next line
+        this._moveToNextLine();
+      }
+    }
+  }
+
+  private _tickInputLine() {
+    const line = this.content[this._currentLineIndex];
+    if (line.type !== "input") return;
+
+    const totalChars = line.text.length;
+
+    if (this._currentCharInLine < totalChars) {
+      this._currentCharInLine++;
+      this._animationTimer = setTimeout(
+        () => this._tickInputLine(),
+        this.typingSpeed,
+      );
+    } else {
+      this._moveToNextLine();
+    }
+  }
+
+  private _moveToNextLine() {
+    this._currentLineIndex++;
+    this._currentCharInLine = 0;
+    this._processCurrentLine();
+  }
+
+  private _stopAnimation() {
+    if (this._animationTimer !== null) {
+      clearTimeout(this._animationTimer);
+      this._animationTimer = null;
+    }
+    this._isAnimating = false;
+  }
+
+  private _renderContent() {
+    // If animation is disabled, render all content
+    if (!this.animated) {
+      return this._renderFullContent();
+    }
+
+    // If animation is complete, render full content
+    if (!this._isAnimating && this._currentLineIndex >= this.content.length) {
+      return this._renderFullContent();
+    }
+
+    return this._renderPartialContent();
+  }
+
+  private _renderFullContent() {
+    return this.content.map((line) => {
+      if (line.type === "input") {
+        // prettier-ignore
+        // to prevent the formatter from breaking the template literal
+        return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
+      } else if ("text" in line) {
+        // prettier-ignore
+        return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
+      } else {
+        // prettier-ignore
+        return html`<div class="terminal-element__body-line">${line.segments.length === 0
+          ? html`&nbsp;`
+          : line.segments.map(
+              (segment) =>
+                html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
+            )}</div>`;
+      }
+    });
+  }
+
+  private _renderPartialContent() {
+    const result: ReturnType<typeof html>[] = [];
+
+    for (let i = 0; i < this.content.length; i++) {
+      const line = this.content[i];
+
+      if (i < this._currentLineIndex) {
+        // Render the line if it's before the current animating line
+        result.push(this._renderFullLine(line));
+      } else if (i === this._currentLineIndex) {
+        // Render the current animating line with typing effect
+        if (line.type === "input") {
+          result.push(this._renderPartialInputLine(line));
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private _renderFullLine(line: Line) {
+    if (line.type === "input") {
+      // prettier-ignore
+      return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
+    } else if ("text" in line) {
+      // prettier-ignore
+      return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
+    } else {
+      // prettier-ignore
+      return html`<div class="terminal-element__body-line">${line.segments.length === 0
+        ? html`&nbsp;`
+        : line.segments.map(
+            (segment) =>
+              html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
+          )}</div>`;
+    }
+  }
+
+  private _renderPartialInputLine(line: InputLine) {
+    const visibleText = line.text.slice(0, this._currentCharInLine);
+    // prettier-ignore
+    return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${visibleText}</span><span class="terminal-element__body-caret"></span></div>`;
+  }
 
   render() {
     return html`
@@ -241,26 +428,7 @@ export class TerminalElement extends LitElement {
         </div>
         <div class="terminal-element__body">
           <div class="terminal-element__body-content" data-testid="content">
-            ${this.content.map((line) => {
-              if (line.type === "input") {
-                // prettier-ignore
-                // to prevent the formatter from breaking the template literal
-                return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
-              } else if (line.type === "output") {
-                // prettier-ignore
-                // to prevent the formatter from breaking the template literal
-                if ("text" in line) {
-                  return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
-                } else {
-                  return html`<div class="terminal-element__body-line">${line.segments.length === 0
-                    ? html`&nbsp;`
-                    : line.segments.map(
-                        (segment) =>
-                          html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
-                      )}</div>`;
-                }
-              }
-            })}
+            ${this._renderContent()}
           </div>
         </div>
       </div>

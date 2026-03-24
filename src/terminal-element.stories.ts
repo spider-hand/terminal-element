@@ -14,6 +14,8 @@ const meta = {
     currentDirectory: "~/project",
     prompt: "$",
     content: [],
+    animated: false,
+    typingSpeed: 50,
   },
   argTypes: {
     width: { control: "text" },
@@ -22,6 +24,8 @@ const meta = {
     currentDirectory: { control: "text" },
     prompt: { control: "text" },
     content: { control: "object" },
+    animated: { control: "boolean" },
+    typingSpeed: { control: "number" },
   },
 } satisfies Meta<TerminalElementProps>;
 
@@ -37,10 +41,18 @@ export const Dark: Story = {
     content: [
       { type: "input", text: "pnpm run dev" },
       { type: "output", text: "" },
-      { type: "output", text: "> terminal-element@0.0.0 dev /Users/..." },
+      {
+        type: "output",
+        text: "> terminal-element@0.0.0 dev /Users/...",
+        delay: 500,
+      },
       { type: "output", text: "> vite" },
       { type: "output", text: "" },
-      { type: "output", text: "Port 5173 is in use, trying another one..." },
+      {
+        type: "output",
+        text: "Port 5173 is in use, trying another one...",
+        delay: 50,
+      },
       { type: "output", text: "" },
       {
         type: "output",
@@ -49,6 +61,7 @@ export const Dark: Story = {
           { text: "  ready in", color: "black-bright" },
           { text: " 100 ms" },
         ],
+        delay: 300,
       },
       {
         type: "output",
@@ -86,10 +99,18 @@ export const Light: Story = {
     content: [
       { type: "input", text: "pnpm run dev" },
       { type: "output", text: "" },
-      { type: "output", text: "> terminal-element@0.0.0 dev /Users/..." },
+      {
+        type: "output",
+        text: "> terminal-element@0.0.0 dev /Users/...",
+        delay: 500,
+      },
       { type: "output", text: "> vite" },
       { type: "output", text: "" },
-      { type: "output", text: "Port 5173 is in use, trying another one..." },
+      {
+        type: "output",
+        text: "Port 5173 is in use, trying another one...",
+        delay: 50,
+      },
       { type: "output", text: "" },
       {
         type: "output",
@@ -98,6 +119,7 @@ export const Light: Story = {
           { text: "  ready in", color: "black-bright" },
           { text: " 100 ms" },
         ],
+        delay: 300,
       },
       {
         type: "output",
