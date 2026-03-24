@@ -5,6 +5,14 @@ import "./terminal-element";
 import type { TerminalElement } from "./terminal-element";
 
 describe("terminal-element", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("renders with default width and height", async () => {
     const screen = render(html`<terminal-element></terminal-element>`);
 
@@ -145,14 +153,6 @@ describe("terminal-element", () => {
   });
 
   describe("updated", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("restarts animation when content changes", async () => {
       const screen = render(
         html`<terminal-element
@@ -249,14 +249,6 @@ describe("terminal-element", () => {
   });
 
   describe("renderContent", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("renders all content when animation is disabled", async () => {
       const screen = render(
         html`<terminal-element
@@ -385,14 +377,6 @@ describe("terminal-element", () => {
   });
 
   describe("renderPartialContent", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("renders the line if it's before the current animated line", async () => {
       const screen = render(
         html`<terminal-element
@@ -526,14 +510,6 @@ describe("terminal-element", () => {
   });
 
   describe("renderFullLine", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("renders input line with prompt and content", async () => {
       const screen = render(
         html`<terminal-element
@@ -620,14 +596,6 @@ describe("terminal-element", () => {
   });
 
   describe("renderPartialInputLine", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("renders the visible part of the input line with prompt", async () => {
       const screen = render(
         html`<terminal-element
@@ -661,5 +629,120 @@ describe("terminal-element", () => {
         .querySelector(".terminal-element__body-caret");
       expect(caret).not.toBeNull();
     });
+  });
+
+  it("restarts animation after completion when loop is enabled", async () => {
+    const screen = render(
+      html`<terminal-element
+        .animated=${true}
+        .typingSpeed=${100}
+        .loop=${true}
+        .loopDelay=${500}
+        .content=${[{ type: "input", text: "1234567890" }] as const}
+      ></terminal-element>`,
+    );
+
+    const el = screen.container.querySelector(
+      "terminal-element",
+    ) as TerminalElement;
+    await el.updateComplete;
+
+    // Complete first animation
+    vi.advanceTimersByTime(1000);
+    await el.updateComplete;
+
+    const content = screen.getByTestId("content");
+    await expect.element(content).toHaveTextContent("$ 1234567890");
+
+    // Wait for loopDelay to trigger restart
+    vi.advanceTimersByTime(500);
+    await el.updateComplete;
+
+    // Animation should have restarted
+    vi.advanceTimersByTime(200);
+    await el.updateComplete;
+
+    // Should show partial text
+    await expect.element(content).toHaveTextContent("$ 123");
+    const text = content.element().textContent || "";
+    expect(text).not.toContain("1234567890");
+  });
+
+  it("respects loopDelay before restarting animation", async () => {
+    const screen = render(
+      html`<terminal-element
+        .animated=${true}
+        .typingSpeed=${100}
+        .loop=${true}
+        .loopDelay=${1000}
+        .content=${[{ type: "input", text: "1234567890" }] as const}
+      ></terminal-element>`,
+    );
+
+    const el = screen.container.querySelector(
+      "terminal-element",
+    ) as TerminalElement;
+    await el.updateComplete;
+
+    // Complete first animation
+    vi.advanceTimersByTime(1000);
+    await el.updateComplete;
+
+    const content = screen.getByTestId("content");
+    await expect.element(content).toHaveTextContent("$ 1234567890");
+
+    // Advance timer some time
+    vi.advanceTimersByTime(500);
+    await el.updateComplete;
+
+    // Content should still be complete
+    await expect.element(content).toHaveTextContent("$ 1234567890");
+
+    // Advance timer to restart animation
+    vi.advanceTimersByTime(500);
+    await el.updateComplete;
+
+    // Animation should be restarted
+    vi.advanceTimersByTime(200);
+    await el.updateComplete;
+
+    // Should show partial text
+    await expect.element(content).toHaveTextContent("$ 123");
+  });
+
+  it("does not restart animation when loop is disabled", async () => {
+    const screen = render(
+      html`<terminal-element
+        .animated=${true}
+        .typingSpeed=${100}
+        .loop=${false}
+        .content=${[{ type: "input", text: "1234567890" }] as const}
+      ></terminal-element>`,
+    );
+
+    const el = screen.container.querySelector(
+      "terminal-element",
+    ) as TerminalElement;
+    await el.updateComplete;
+
+    // Complete animation
+    vi.advanceTimersByTime(1000);
+    await el.updateComplete;
+
+    const content = screen.getByTestId("content");
+    await expect.element(content).toHaveTextContent("$ 1234567890");
+
+    // Wait some time
+    vi.advanceTimersByTime(2000);
+    await el.updateComplete;
+
+    // Content should remain complete
+    await expect.element(content).toHaveTextContent("$ 1234567890");
+
+    // No caret as the animation is already completed
+    const caret = content
+      .element()
+      .querySelector(".terminal-element__body-caret");
+    expect(caret).toBeNull();
   });
 });

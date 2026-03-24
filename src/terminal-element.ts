@@ -55,6 +55,8 @@ export interface TerminalElementProps {
   content?: Line[];
   animated?: boolean;
   typingSpeed?: number;
+  loop?: boolean;
+  loopDelay?: number;
 }
 
 @customElement("terminal-element")
@@ -67,6 +69,8 @@ export class TerminalElement extends LitElement {
   @property({ type: Array }) content: Line[] = [];
   @property({ type: Boolean }) animated = false;
   @property({ type: Number }) typingSpeed = 100;
+  @property({ type: Boolean }) loop = false;
+  @property({ type: Number }) loopDelay = 3000;
 
   @state() private _currentLineIndex = 0;
   @state() private _currentCharInLine = 0;
@@ -268,8 +272,15 @@ export class TerminalElement extends LitElement {
 
   private _processCurrentLine() {
     if (this._currentLineIndex >= this.content.length) {
-      // Animation complete
-      this._isAnimating = false;
+      if (this.loop) {
+        // Wait loopDelay, then restart animation
+        this._animationTimer = setTimeout(() => {
+          this._startAnimation();
+        }, this.loopDelay);
+      } else {
+        // Animation complete
+        this._isAnimating = false;
+      }
       return;
     }
 

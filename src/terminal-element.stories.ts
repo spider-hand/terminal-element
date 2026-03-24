@@ -14,8 +14,10 @@ const meta = {
     currentDirectory: "~/project",
     prompt: "$",
     content: [],
-    animated: false,
-    typingSpeed: 50,
+    animated: true,
+    typingSpeed: 100,
+    loop: true,
+    loopDelay: 3000,
   },
   argTypes: {
     width: { control: "text" },
@@ -26,6 +28,8 @@ const meta = {
     content: { control: "object" },
     animated: { control: "boolean" },
     typingSpeed: { control: "number" },
+    loop: { control: "boolean" },
+    loopDelay: { control: "number" },
   },
 } satisfies Meta<TerminalElementProps>;
 
@@ -96,6 +100,7 @@ export const Dark: Story = {
 export const Light: Story = {
   args: {
     theme: "light",
+
     content: [
       { type: "input", text: "pnpm run dev" },
       { type: "output", text: "" },
@@ -148,5 +153,9 @@ export const Light: Story = {
         ],
       },
     ],
+
+    animated: true,
+    loop: true,
+    loopDelay: 5000,
   },
 };
