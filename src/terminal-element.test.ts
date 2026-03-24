@@ -631,13 +631,16 @@ describe("terminal-element", () => {
     });
   });
 
-  it("restarts animation after completion when loop is enabled", async () => {
+  it("restarts animation after delayAfterComplete and delayBeforeRestart", async () => {
+    vi.useFakeTimers();
+
     const screen = render(
       html`<terminal-element
         .animated=${true}
         .typingSpeed=${100}
         .loop=${true}
-        .loopDelay=${500}
+        .delayAfterComplete=${500}
+        .delayBeforeRestart=${300}
         .content=${[{ type: "input", text: "1234567890" }] as const}
       ></terminal-element>`,
     );
@@ -654,27 +657,35 @@ describe("terminal-element", () => {
     const content = screen.getByTestId("content");
     await expect.element(content).toHaveTextContent("$ 1234567890");
 
-    // Wait for loopDelay to trigger restart
+    // Wait for delayAfterComplete
     vi.advanceTimersByTime(500);
     await el.updateComplete;
 
-    // Animation should have restarted
+    // Content should be empty during delayBeforeRestart
+    const textDuringWait = content.element().textContent?.trim();
+    expect(textDuringWait).toBe("");
+
+    // Wait for delayBeforeRestart
+    vi.advanceTimersByTime(300);
+    await el.updateComplete;
+
+    // Advance some time to show partial content of the restarted animation
     vi.advanceTimersByTime(200);
     await el.updateComplete;
 
-    // Should show partial text
     await expect.element(content).toHaveTextContent("$ 123");
-    const text = content.element().textContent || "";
-    expect(text).not.toContain("1234567890");
   });
 
-  it("respects loopDelay before restarting animation", async () => {
+  it("keeps completed content visible during delayAfterComplete", async () => {
+    vi.useFakeTimers();
+
     const screen = render(
       html`<terminal-element
         .animated=${true}
         .typingSpeed=${100}
         .loop=${true}
-        .loopDelay=${1000}
+        .delayAfterComplete=${1000}
+        .delayBeforeRestart=${500}
         .content=${[{ type: "input", text: "1234567890" }] as const}
       ></terminal-element>`,
     );
@@ -691,26 +702,53 @@ describe("terminal-element", () => {
     const content = screen.getByTestId("content");
     await expect.element(content).toHaveTextContent("$ 1234567890");
 
-    // Advance timer some time
+    // Advance some time during delayAfterComplete
     vi.advanceTimersByTime(500);
     await el.updateComplete;
 
-    // Content should still be complete
     await expect.element(content).toHaveTextContent("$ 1234567890");
+  });
 
-    // Advance timer to restart animation
+  it("shows empty screen during delayBeforeRestart", async () => {
+    vi.useFakeTimers();
+
+    const screen = render(
+      html`<terminal-element
+        .animated=${true}
+        .typingSpeed=${100}
+        .loop=${true}
+        .delayAfterComplete=${500}
+        .delayBeforeRestart=${1000}
+        .content=${[{ type: "input", text: "1234567890" }] as const}
+      ></terminal-element>`,
+    );
+
+    const el = screen.container.querySelector(
+      "terminal-element",
+    ) as TerminalElement;
+    await el.updateComplete;
+
+    // Complete animation + delayAfterComplete
+    vi.advanceTimersByTime(1000 + 500);
+    await el.updateComplete;
+
+    const content = screen.getByTestId("content");
+
+    // Content should be empty
+    const textDuringWait = content.element().textContent?.trim();
+    expect(textDuringWait).toBe("");
+
+    // Advance some time during delayBeforeRestart
     vi.advanceTimersByTime(500);
     await el.updateComplete;
 
-    // Animation should be restarted
-    vi.advanceTimersByTime(200);
-    await el.updateComplete;
-
-    // Should show partial text
-    await expect.element(content).toHaveTextContent("$ 123");
+    const textStillWaiting = content.element().textContent?.trim();
+    expect(textStillWaiting).toBe("");
   });
 
   it("does not restart animation when loop is disabled", async () => {
+    vi.useFakeTimers();
+
     const screen = render(
       html`<terminal-element
         .animated=${true}
@@ -732,14 +770,14 @@ describe("terminal-element", () => {
     const content = screen.getByTestId("content");
     await expect.element(content).toHaveTextContent("$ 1234567890");
 
-    // Wait some time
-    vi.advanceTimersByTime(2000);
+    // Wait additional time
+    vi.advanceTimersByTime(5000);
     await el.updateComplete;
 
     // Content should remain complete
     await expect.element(content).toHaveTextContent("$ 1234567890");
 
-    // No caret as the animation is already completed
+    // No caret
     const caret = content
       .element()
       .querySelector(".terminal-element__body-caret");

@@ -56,7 +56,8 @@ export interface TerminalElementProps {
   animated?: boolean;
   typingSpeed?: number;
   loop?: boolean;
-  loopDelay?: number;
+  delayAfterComplete?: number;
+  delayBeforeRestart?: number;
 }
 
 @customElement("terminal-element")
@@ -70,11 +71,13 @@ export class TerminalElement extends LitElement {
   @property({ type: Boolean }) animated = false;
   @property({ type: Number }) typingSpeed = 100;
   @property({ type: Boolean }) loop = false;
-  @property({ type: Number }) loopDelay = 3000;
+  @property({ type: Number }) delayAfterComplete = 2000;
+  @property({ type: Number }) delayBeforeRestart = 1000;
 
   @state() private _currentLineIndex = 0;
   @state() private _currentCharInLine = 0;
   @state() private _isAnimating = false;
+  @state() private _isWaitingToRestart = false;
 
   private _animationTimer: number | null = null;
 
@@ -267,16 +270,22 @@ export class TerminalElement extends LitElement {
     this._currentLineIndex = 0;
     this._currentCharInLine = 0;
     this._isAnimating = true;
+    this._isWaitingToRestart = false;
     this._processCurrentLine();
   }
 
   private _processCurrentLine() {
     if (this._currentLineIndex >= this.content.length) {
       if (this.loop) {
-        // Wait loopDelay, then restart animation
+        // Wait delayAfterComplete with completed content visible
         this._animationTimer = setTimeout(() => {
-          this._startAnimation();
-        }, this.loopDelay);
+          // Clear content and wait delayBeforeRestart
+          this._isWaitingToRestart = true;
+          this.requestUpdate();
+          this._animationTimer = setTimeout(() => {
+            this._startAnimation();
+          }, this.delayBeforeRestart);
+        }, this.delayAfterComplete);
       } else {
         // Animation complete
         this._isAnimating = false;
@@ -331,6 +340,7 @@ export class TerminalElement extends LitElement {
       this._animationTimer = null;
     }
     this._isAnimating = false;
+    this._isWaitingToRestart = false;
   }
 
   private _renderContent() {
@@ -339,7 +349,12 @@ export class TerminalElement extends LitElement {
       return this._renderFullContent();
     }
 
-    // If animation is complete, render full content
+    // If waiting to restart, render empty
+    if (this._isWaitingToRestart) {
+      return null;
+    }
+
+    // If animation is complete (non-loop), render full content
     if (!this._isAnimating && this._currentLineIndex >= this.content.length) {
       return this._renderFullContent();
     }

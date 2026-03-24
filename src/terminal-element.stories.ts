@@ -17,7 +17,8 @@ const meta = {
     animated: true,
     typingSpeed: 100,
     loop: true,
-    loopDelay: 3000,
+    delayAfterComplete: 2000,
+    delayBeforeRestart: 1000,
   },
   argTypes: {
     width: { control: "text" },
@@ -29,7 +30,8 @@ const meta = {
     animated: { control: "boolean" },
     typingSpeed: { control: "number" },
     loop: { control: "boolean" },
-    loopDelay: { control: "number" },
+    delayAfterComplete: { control: "number" },
+    delayBeforeRestart: { control: "number" },
   },
 } satisfies Meta<TerminalElementProps>;
 
@@ -42,6 +44,7 @@ export const Default: Story = {};
 export const Dark: Story = {
   args: {
     theme: "dark",
+
     content: [
       { type: "input", text: "pnpm run dev" },
       { type: "output", text: "" },
@@ -94,6 +97,9 @@ export const Dark: Story = {
         ],
       },
     ],
+
+    delayBeforeRestart: 2000,
+    delayAfterComplete: 1000,
   },
 };
 
@@ -156,6 +162,7 @@ export const Light: Story = {
 
     animated: true,
     loop: true,
-    loopDelay: 5000,
+    delayAfterComplete: 2000,
+    delayBeforeRestart: 1000,
   },
 };
