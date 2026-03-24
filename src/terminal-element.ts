@@ -81,6 +81,7 @@ export class TerminalElement extends LitElement {
       height: fit-content;
 
       --terminal-element-font-size: 14px;
+      --terminal-element-box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
 
       /** UI colors */
       --terminal-element-border-color: #070707;
@@ -154,7 +155,7 @@ export class TerminalElement extends LitElement {
       overflow: hidden;
       border: 1px solid var(--terminal-element-border-color);
       border-radius: 10px;
-      box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
+      box-shadow: var(--terminal-element-box-shadow);
     }
 
     .terminal-element__header {
