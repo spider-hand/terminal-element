@@ -30,5 +30,3 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: pnpm run test
       - run: pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
