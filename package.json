@@ -1,11 +1,27 @@
 {
   "name": "terminal-element",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A Web Component for rendering terminal-style previews",
   "type": "module",
+  "main": "dist/terminal-element.es.js",
+  "module": "dist/terminal-element.es.js",
+  "types": "dist/types/terminal-element.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/terminal-element.d.ts",
+      "import": "./dist/terminal-element.es.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "build:types": "tsc -p tsconfig.build.types.json",
+    "build:all": "pnpm run build && pnpm run build:types",
     "preview": "vite preview",
     "lint": "eslint --fix",
     "format": "prettier --write .",
@@ -15,8 +31,25 @@
     "test": "vitest --config=vitest.browser.config.ts",
     "test:coverage": "vitest run --config=vitest.browser.config.ts --coverage"
   },
-  "dependencies": {
-    "lit": "^3.3.2"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spider-hand/terminal-element.git"
+  },
+  "keywords": [
+    "terminal",
+    "cli",
+    "web-component",
+    "webcomponent",
+    "lit"
+  ],
+  "author": "Akinori Hoshina <creative.spider.hand@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/spider-hand/terminal-element/issues"
+  },
+  "homepage": "https://github.com/spider-hand/terminal-element#readme",
+  "peerDependencies": {
+    "lit": "^3.0.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.2",
@@ -35,6 +68,7 @@
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
+    "lit": "^3.3.2",
     "playwright": "^1.58.2",
     "postcss-lit": "^1.4.1",
     "prettier": "^3.8.1",
@@ -49,7 +83,10 @@
     "vitest-browser-lit": "^1.0.1"
   },
   "lint-staged": {
-    "*.{js,ts}": ["eslint --fix", "prettier --write"],
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
     "*.ts": "stylelint --fix"
   }
 }
