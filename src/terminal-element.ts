@@ -229,7 +229,8 @@ export class TerminalElement extends LitElement {
     }
 
     .terminal-element__body-line {
-      white-space: pre;
+      word-break: break-all;
+      white-space: pre-wrap;
     }
 
     .terminal-element__body-caret {
