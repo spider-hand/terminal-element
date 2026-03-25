@@ -1,6 +1,6 @@
 # terminal-element
 
-![demo](https://github.com/user-attachments/assets/8e494ebe-1fea-4be9-b7f3-c47cdc2ede96)
+![demo](https://github.com/user-attachments/assets/7e96e50f-ca82-4bd5-a5e2-0a215ae30b12)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![codecov](https://codecov.io/gh/spider-hand/terminal-element/graph/badge.svg?token=3TNWF0ZMDS)](https://codecov.io/gh/spider-hand/terminal-element) ![Lit](https://img.shields.io/badge/lit-%23324FFF.svg?&logo=lit&logoColor=white)
 
@@ -69,6 +69,7 @@ type OutputLineSegments = {
 type Segment = {
   text: string;
   color?: AnsiColorType; // "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" and their "-bright" variants
+  bg?: AnsiColorType;
 };
 ```
 
