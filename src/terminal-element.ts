@@ -2,9 +2,9 @@ import { LitElement, css, html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
-type ThemeType = "light" | "dark";
+export type ThemeType = "light" | "dark";
 
-type AnsiColorType =
+export type AnsiColorType =
   | "black"
   | "black-bright"
   | "red"
@@ -22,30 +22,30 @@ type AnsiColorType =
   | "white"
   | "white-bright";
 
-type Segment = {
+export type Segment = {
   text: string;
   color?: AnsiColorType;
   bg?: AnsiColorType;
 };
 
-type InputLine = {
+export type InputLine = {
   type: "input";
   text: string;
 };
 
-type OutputLineText = {
+export type OutputLineText = {
   type: "output";
   text: string;
   delay?: number;
 };
 
-type OutputLineSegments = {
+export type OutputLineSegments = {
   type: "output";
   segments: Segment[];
   delay?: number;
 };
 
-type Line = InputLine | OutputLineText | OutputLineSegments;
+export type Line = InputLine | OutputLineText | OutputLineSegments;
 
 export interface TerminalElementProps {
   width?: string;
