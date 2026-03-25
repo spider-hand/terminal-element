@@ -8,6 +8,8 @@ A Web Component for rendering terminal-style previews - works with any framework
 
 ## Demo
 
+📗 [Storybook](https://main--69c3d55e127974ed658d1728.chromatic.com)
+
 ## Installation
 
 ```
