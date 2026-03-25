@@ -152,6 +152,29 @@ describe("terminal-element", () => {
     expect(spans[1]).toHaveStyle({ color: "rgb(212, 212, 212)" });
   });
 
+  it("renders the content with background color", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          {
+            type: "output",
+            segments: [{ text: "colored", bg: "red" }, { text: "normal" }],
+          },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    const spans = element.element().querySelectorAll("span");
+
+    expect(spans[0]).toHaveStyle({
+      backgroundColor: "rgb(180, 60, 41)",
+    });
+    expect(spans[1]).toHaveStyle({ backgroundColor: "inherit" });
+  });
+
   describe("updated", () => {
     it("restarts animation when content changes", async () => {
       const screen = render(

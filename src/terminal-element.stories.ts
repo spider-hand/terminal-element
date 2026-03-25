@@ -11,13 +11,13 @@ const meta = {
     width: "600px",
     height: "360px",
     theme: "dark",
-    currentDirectory: "~/project",
+    currentDirectory: "",
     prompt: "$",
     content: [],
     animated: true,
     typingSpeed: 100,
     loop: true,
-    delayAfterComplete: 2000,
+    delayAfterComplete: 4000,
     delayBeforeRestart: 1000,
   },
   argTypes: {
@@ -46,123 +46,207 @@ export const Dark: Story = {
     theme: "dark",
 
     content: [
-      { type: "input", text: "pnpm run dev" },
+      { type: "input", text: "pnpm run test" },
       { type: "output", text: "" },
       {
         type: "output",
-        text: "> terminal-element@0.0.0 dev /Users/...",
         delay: 500,
+        segments: [
+          { text: " RUN ", color: "black", bg: "cyan" },
+          { text: " v4.1.0 ", color: "cyan" },
+          { text: "/Users/terminal-element", color: "black-bright" },
+        ],
       },
-      { type: "output", text: "> vite" },
       { type: "output", text: "" },
       {
         type: "output",
-        text: "Port 5173 is in use, trying another one...",
-        delay: 50,
+        segments: [
+          {
+            text: "stderr | unknown test",
+            color: "black-bright",
+          },
+        ],
       },
+      {
+        type: "output",
+        text: "Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.",
+      },
+      {
+        type: "output",
+        delay: 500,
+        segments: [
+          { text: " ✓ ", color: "green" },
+          { text: " chromium ", color: "black", bg: "yellow" },
+          { text: " src/terminal-element.test.ts " },
+          { text: "(2 tests | ", color: "black-bright" },
+          { text: "1 skipped", color: "yellow" },
+          { text: ") " },
+          { text: "5ms", color: "green" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "   ✓ ", color: "green" },
+          { text: "terminal-element (1)" },
+        ],
+      },
+      {
+        type: "output",
+        delay: 100,
+        segments: [
+          { text: "     ✓ ", color: "green" },
+          { text: "first " },
+          { text: "6ms", color: "green" },
+        ],
+      },
+      { type: "output", text: "     ↓ second" },
       { type: "output", text: "" },
       {
         type: "output",
         segments: [
-          { text: "  VITE v8.0.1", color: "green-bright" },
-          { text: "  ready in", color: "black-bright" },
-          { text: " 100 ms" },
-        ],
-        delay: 300,
-      },
-      {
-        type: "output",
-        segments: [
-          { text: "  ➜", color: "green-bright" },
-          { text: "  Local:" },
-          { text: "   http://localhost:5174/", color: "cyan-bright" },
+          { text: " Test Files  ", color: "black-bright" },
+          { text: "1 passed ", color: "green" },
+          { text: "(1)", color: "black-bright" },
         ],
       },
       {
         type: "output",
+        delay: 100,
         segments: [
-          { text: "  ➜", color: "green-bright" },
-          { text: "  Network: use", color: "black-bright" },
-          { text: " --host" },
-          { text: " to expose", color: "black-bright" },
+          { text: "      Tests  ", color: "black-bright" },
+          { text: "1 passed ", color: "green" },
+          { text: "| ", color: "black-bright" },
+          { text: "1 skipped ", color: "yellow" },
+          { text: "(2)", color: "black-bright" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "green-bright" },
-          { text: "  press", color: "black-bright" },
-          { text: " h + enter" },
-          { text: " to show help", color: "black-bright" },
+          { text: "   Start at  ", color: "black-bright" },
+          { text: "01:23:45" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "   Duration  ", color: "black-bright" },
+          { text: "1.23s" },
+          {
+            text: " (transform 0ms, setup 0ms, import 45ms, tests 6ms, environment 0ms)",
+            color: "black-bright",
+          },
         ],
       },
     ],
 
-    delayBeforeRestart: 2000,
-    delayAfterComplete: 1000,
+    delayAfterComplete: 4000,
+    delayBeforeRestart: 1000,
   },
 };
 
 export const Light: Story = {
   args: {
     theme: "light",
-
     content: [
-      { type: "input", text: "pnpm run dev" },
+      { type: "input", text: "pnpm run test" },
       { type: "output", text: "" },
       {
         type: "output",
-        text: "> terminal-element@0.0.0 dev /Users/...",
         delay: 500,
+        segments: [
+          { text: " RUN ", color: "black", bg: "cyan" },
+          { text: " v4.1.0 ", color: "cyan" },
+          { text: "/Users/terminal-element", color: "black-bright" },
+        ],
       },
-      { type: "output", text: "> vite" },
       { type: "output", text: "" },
       {
         type: "output",
-        text: "Port 5173 is in use, trying another one...",
-        delay: 50,
+        segments: [
+          {
+            text: "stderr | unknown test",
+            color: "black-bright",
+          },
+        ],
       },
+      {
+        type: "output",
+        text: "Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.",
+      },
+      {
+        type: "output",
+        delay: 500,
+        segments: [
+          { text: " ✓ ", color: "green" },
+          { text: " chromium ", color: "black", bg: "yellow" },
+          { text: " src/terminal-element.test.ts " },
+          { text: "(2 tests | ", color: "black-bright" },
+          { text: "1 skipped", color: "yellow" },
+          { text: ") " },
+          { text: "5ms", color: "green" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "   ✓ ", color: "green" },
+          { text: "terminal-element (1)" },
+        ],
+      },
+      {
+        type: "output",
+        delay: 100,
+        segments: [
+          { text: "     ✓ ", color: "green" },
+          { text: "first " },
+          { text: "6ms", color: "green" },
+        ],
+      },
+      { type: "output", text: "     ↓ second" },
       { type: "output", text: "" },
       {
         type: "output",
+        delay: 100,
         segments: [
-          { text: "  VITE v8.0.1", color: "green" },
-          { text: "  ready in", color: "black-bright" },
-          { text: " 100 ms" },
-        ],
-        delay: 300,
-      },
-      {
-        type: "output",
-        segments: [
-          { text: "  ➜", color: "green" },
-          { text: "  Local:" },
-          { text: "   http://localhost:5174/", color: "cyan" },
+          { text: " Test Files  ", color: "black-bright" },
+          { text: "1 passed ", color: "green" },
+          { text: "(1)", color: "black-bright" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "green" },
-          { text: "  Network: use", color: "black-bright" },
-          { text: " --host" },
-          { text: " to expose", color: "black-bright" },
+          { text: "      Tests  ", color: "black-bright" },
+          { text: "1 passed ", color: "green" },
+          { text: "| ", color: "black-bright" },
+          { text: "1 skipped ", color: "yellow" },
+          { text: "(2)", color: "black-bright" },
         ],
       },
       {
         type: "output",
         segments: [
-          { text: "  ➜", color: "green" },
-          { text: "  press", color: "black-bright" },
-          { text: " h + enter" },
-          { text: " to show help", color: "black-bright" },
+          { text: "   Start at  ", color: "black-bright" },
+          { text: "01:23:45" },
+        ],
+      },
+      {
+        type: "output",
+        segments: [
+          { text: "   Duration  ", color: "black-bright" },
+          { text: "1.23s" },
+          {
+            text: " (transform 0ms, setup 0ms, import 45ms, tests 6ms, environment 0ms)",
+            color: "black-bright",
+          },
         ],
       },
     ],
-
     animated: true,
     loop: true,
-    delayAfterComplete: 2000,
+    delayAfterComplete: 4000,
     delayBeforeRestart: 1000,
   },
 };

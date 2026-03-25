@@ -25,6 +25,7 @@ type AnsiColorType =
 type Segment = {
   text: string;
   color?: AnsiColorType;
+  bg?: AnsiColorType;
 };
 
 type InputLine = {
@@ -71,7 +72,7 @@ export class TerminalElement extends LitElement {
   @property({ type: Boolean }) animated = false;
   @property({ type: Number }) typingSpeed = 100;
   @property({ type: Boolean }) loop = false;
-  @property({ type: Number }) delayAfterComplete = 2000;
+  @property({ type: Number }) delayAfterComplete = 4000;
   @property({ type: Number }) delayBeforeRestart = 1000;
 
   @state() private _currentLineIndex = 0;
@@ -377,7 +378,7 @@ export class TerminalElement extends LitElement {
           ? html`&nbsp;`
           : line.segments.map(
               (segment) =>
-                html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
+                html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"}; background-color: ${segment.bg ? `var(--terminal-element-ansi-${segment.bg})` : "inherit"};">${segment.text}</span>`,
             )}</div>`;
       }
     });
@@ -416,7 +417,7 @@ export class TerminalElement extends LitElement {
         ? html`&nbsp;`
         : line.segments.map(
             (segment) =>
-              html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"};">${segment.text}</span>`,
+              html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"}; background-color: ${segment.bg ? `var(--terminal-element-ansi-${segment.bg})` : "inherit"};">${segment.text}</span>`,
           )}</div>`;
     }
   }
