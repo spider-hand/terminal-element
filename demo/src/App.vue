@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import "../../src/terminal-element";
-import type { Line, ThemeType } from "../../src/terminal-element";
-// TODO:
-// import "terminal-element";
-// import type { Line, ThemeType } from "terminal-element";
+import "terminal-element";
+import type { Line, ThemeType } from "terminal-element";
 
 const theme = ref<ThemeType>("dark");
 const animated = ref(true);
