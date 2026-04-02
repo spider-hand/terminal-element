@@ -37,7 +37,7 @@ npm install terminal-element
 | animated           | `boolean`           | No       | `false`   | Enable typing animation                              |
 | typingSpeed        | `number`            | No       | `100`     | Typing speed in ms per character                     |
 | loop               | `boolean`           | No       | `false`   | Enable infinite loop animation                       |
-| delayAfterComplete | `number`            | No       | `2000`    | Delay after animation completes before clearing (ms) |
+| delayAfterComplete | `number`            | No       | `4000`    | Delay after animation completes before clearing (ms) |
 | delayBeforeRestart | `number`            | No       | `1000`    | Delay showing empty screen before restart (ms)       |
 
 ### Line
