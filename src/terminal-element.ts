@@ -48,7 +48,15 @@ export type OutputLineSegments = {
   delay?: number;
 };
 
-export type Line = InputLine | OutputLineText | OutputLineSegments;
+export type EraseLine = {
+  type: "erase";
+  count: number;
+  delay?: number;
+};
+
+export type VisibleLine = InputLine | OutputLineText | OutputLineSegments;
+
+export type Line = VisibleLine | EraseLine;
 
 export interface TerminalElementProps {
   width?: string;
@@ -303,14 +311,14 @@ export class TerminalElement extends LitElement {
     if (currentLine.type === "input") {
       this._tickInputLine();
     } else {
-      const delay = ("delay" in currentLine ? currentLine.delay : 0) ?? 0;
+      const delay = currentLine.delay ?? 0;
       if (delay > 0) {
-        // Show the output line with a delay, then move to next line
+        // Apply the line after a delay, then move to next line
         this._animationTimer = setTimeout(() => {
           this._moveToNextLine();
         }, delay);
       } else {
-        // Show the output line immediately and move to next line
+        // Apply the line immediately and move to next line
         this._moveToNextLine();
       }
     }
@@ -368,44 +376,42 @@ export class TerminalElement extends LitElement {
   }
 
   private _renderFullContent() {
-    return this.content.map((line) => {
-      if (line.type === "input") {
-        // prettier-ignore
-        // to prevent the formatter from breaking the template literal
-        return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;
-      } else if ("text" in line) {
-        // prettier-ignore
-        return html`<div class="terminal-element__body-line">${this._renderOutputLine(line)}</div>`;
-      } else {
-        // prettier-ignore
-        return html`<div class="terminal-element__body-line">${line.segments.length === 0
-          ? html`&nbsp;`
-          : line.segments.map((segment) => this._renderSegment(segment))}</div>`;
-      }
-    });
+    return this._getVisibleLines(this.content.length).map((line) =>
+      this._renderFullLine(line),
+    );
   }
 
   private _renderPartialContent() {
-    const result: ReturnType<typeof html>[] = [];
+    const result = this._getVisibleLines(this._currentLineIndex).map((line) =>
+      this._renderFullLine(line),
+    );
 
-    for (let i = 0; i < this.content.length; i++) {
-      const line = this.content[i];
+    const line = this.content[this._currentLineIndex];
 
-      if (i < this._currentLineIndex) {
-        // Render the line if it's before the current animating line
-        result.push(this._renderFullLine(line));
-      } else if (i === this._currentLineIndex) {
-        // Render the current animating line with typing effect
-        if (line.type === "input") {
-          result.push(this._renderPartialInputLine(line));
-        }
-      }
+    // Render the current animating line with typing effect.
+    if (line?.type === "input") {
+      result.push(this._renderPartialInputLine(line));
     }
 
     return result;
   }
 
-  private _renderFullLine(line: Line) {
+  private _getVisibleLines(endIndex: number) {
+    const visibleLines: VisibleLine[] = [];
+
+    for (const line of this.content.slice(0, endIndex)) {
+      if (line.type === "erase") {
+        const count = Math.max(0, line.count);
+        visibleLines.splice(Math.max(0, visibleLines.length - count), count);
+      } else {
+        visibleLines.push(line);
+      }
+    }
+
+    return visibleLines;
+  }
+
+  private _renderFullLine(line: VisibleLine) {
     if (line.type === "input") {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;

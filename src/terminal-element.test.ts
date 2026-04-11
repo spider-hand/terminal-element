@@ -125,6 +125,58 @@ describe("terminal-element", () => {
     expect(span).toHaveStyle({ color: "rgb(180, 60, 41)" });
   });
 
+  it("removes previous content with erase line", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", text: "Loading..." },
+          { type: "erase", count: 1 },
+          { type: "output", text: "Done" },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    const text = element.element().textContent || "";
+
+    expect(text).not.toContain("Loading...");
+    await expect.element(element).toHaveTextContent("Done");
+  });
+
+  it("does not remove previous content when erase count is negative", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", text: "Line 1" },
+          { type: "erase", count: -1 },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    await expect.element(element).toHaveTextContent("Line 1");
+  });
+
+  it("clears all visible content when erase count is larger than visible content", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", text: "Line 1" },
+          { type: "erase", count: 10 },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    expect(element.element().textContent?.trim()).toBe("");
+  });
+
   it("renders the line break for empty output line with segments", async () => {
     const screen = render(
       html`<terminal-element
@@ -545,6 +597,40 @@ describe("terminal-element", () => {
       await el.updateComplete;
 
       await expect.element(content).toHaveTextContent("0987654321");
+    });
+
+    it("removes previous content after erase delay", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .content=${[
+            { type: "output", text: "Loading..." },
+            { type: "erase", count: 1, delay: 500 },
+            { type: "output", text: "Done" },
+          ] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      await expect.element(content).toHaveTextContent("Loading...");
+      expect(content.element().textContent || "").not.toContain("Done");
+
+      vi.advanceTimersByTime(499);
+      await el.updateComplete;
+
+      await expect.element(content).toHaveTextContent("Loading...");
+
+      vi.advanceTimersByTime(1);
+      await el.updateComplete;
+
+      const text = content.element().textContent || "";
+      expect(text).not.toContain("Loading...");
+      await expect.element(content).toHaveTextContent("Done");
     });
 
     it("doesn't render the line if it's after the current animated line", async () => {

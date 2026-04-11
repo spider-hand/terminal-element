@@ -99,6 +99,13 @@ type Segment = {
   color?: AnsiColorType; // "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" and their "-bright" variants
   bg?: AnsiColorType;
 };
+
+// Remove previously rendered lines
+type EraseLine = {
+  type: "erase";
+  count: number;
+  delay?: number;
+};
 ```
 
 **Example:**
@@ -107,6 +114,8 @@ type Segment = {
 content = [
   { type: "input", text: "npm install" },
   { type: "output", text: "" },
+  { type: "output", text: "Installing..." },
+  { type: "erase", count: 1, delay: 800 },
   {
     type: "output",
     text: "added 50 packages in 2s",

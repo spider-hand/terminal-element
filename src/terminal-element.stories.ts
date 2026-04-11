@@ -324,6 +324,49 @@ export const BubbleTea: Story = {
         text: "  j/k, up/down: select   enter: choice   q: esc: quit",
         color: "black-bright",
       },
+      {
+        type: "erase",
+        count: 10,
+        delay: 2000,
+      },
+      {
+        type: "output",
+        text: "  Carrot planting?",
+      },
+      {
+        type: "output",
+        text: "",
+      },
+      {
+        type: "output",
+        segments: [
+          {
+            text: "  Cool, we'll need ",
+          },
+          {
+            text: "libgarden ",
+            color: "magenta-bright",
+          },
+          {
+            text: "and ",
+          },
+          {
+            text: "vegeutils",
+            color: "magenta-bright",
+          },
+          {
+            text: "...",
+          },
+        ],
+      },
+      {
+        type: "output",
+        text: "",
+      },
+      {
+        type: "output",
+        text: "  Downloading...",
+      },
     ],
     animated: true,
     loop: true,
