@@ -250,3 +250,27 @@ export const Light: Story = {
     delayBeforeRestart: 1000,
   },
 };
+
+// Inspired by Bubble Tea demo:
+// @see: https://github.com/charmbracelet/bubbletea
+export const BubbleTea: Story = {
+  args: {
+    theme: "dark",
+    prompt: [
+      { text: "thunderclap:", color: "cyan" },
+      { text: "~ ", color: "red" },
+      { text: "christian ", color: "cyan" },
+      { text: "$", color: "red" },
+    ],
+    content: [
+      {
+        type: "input",
+        text: "./demo",
+      },
+    ],
+    animated: true,
+    loop: true,
+    delayAfterComplete: 4000,
+    delayBeforeRestart: 1000,
+  },
+};

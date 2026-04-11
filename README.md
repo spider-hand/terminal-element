@@ -26,19 +26,42 @@ npm install terminal-element
 
 ## Props
 
-| Name               | Type                | Required | Default   | Description                                          |
-| ------------------ | ------------------- | -------- | --------- | ---------------------------------------------------- |
-| width              | `string`            | No       | `"600px"` | Width of the terminal                                |
-| height             | `string`            | No       | `"360px"` | Height of the terminal                               |
-| theme              | `"light" \| "dark"` | No       | `"dark"`  | Theme of the terminal                                |
-| currentDirectory   | `string`            | No       | `""`      | Current directory displayed in header                |
-| prompt             | `string`            | No       | `"$"`     | Prompt symbol                                        |
-| content            | `Line[]`            | No       | `[]`      | Content to display (see [Line](#line) section)       |
-| animated           | `boolean`           | No       | `false`   | Enable typing animation                              |
-| typingSpeed        | `number`            | No       | `100`     | Typing speed in ms per character                     |
-| loop               | `boolean`           | No       | `false`   | Enable infinite loop animation                       |
-| delayAfterComplete | `number`            | No       | `4000`    | Delay after animation completes before clearing (ms) |
-| delayBeforeRestart | `number`            | No       | `1000`    | Delay showing empty screen before restart (ms)       |
+| Name               | Type                  | Required | Default   | Description                                          |
+| ------------------ | --------------------- | -------- | --------- | ---------------------------------------------------- |
+| width              | `string`              | No       | `"600px"` | Width of the terminal                                |
+| height             | `string`              | No       | `"360px"` | Height of the terminal                               |
+| theme              | `"light" \| "dark"`   | No       | `"dark"`  | Theme of the terminal                                |
+| currentDirectory   | `string`              | No       | `""`      | Current directory displayed in header                |
+| prompt             | `string \| Segment[]` | No       | `"$"`     | Prompt symbol or styled prompt segments              |
+| content            | `Line[]`              | No       | `[]`      | Content to display (see [Line](#line) section)       |
+| animated           | `boolean`             | No       | `false`   | Enable typing animation                              |
+| typingSpeed        | `number`              | No       | `100`     | Typing speed in ms per character                     |
+| loop               | `boolean`             | No       | `false`   | Enable infinite loop animation                       |
+| delayAfterComplete | `number`              | No       | `4000`    | Delay after animation completes before clearing (ms) |
+| delayBeforeRestart | `number`              | No       | `1000`    | Delay showing empty screen before restart (ms)       |
+
+### Prompt
+
+**Prompt** - Displays before input lines:
+
+```typescript
+type Prompt = string | Segment[];
+```
+
+String prompt:
+
+```javascript
+prompt = "$";
+```
+
+Styled prompt:
+
+```javascript
+prompt = [
+  { text: "main", color: "green" },
+  { text: " $", color: "cyan", bg: "black" },
+];
+```
 
 ### Line
 
@@ -86,10 +109,7 @@ content = [
   { type: "output", text: "added 50 packages in 2s", delay: 500 },
   {
     type: "output",
-    segments: [
-      { text: "✓", color: "green" },
-      { text: " Done!" },
-    ],
+    segments: [{ text: "✓", color: "green" }, { text: " Done!" }],
   },
 ];
 ```

@@ -59,6 +59,29 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("$ Hello, World!");
   });
 
+  it("renders prompt segments with color and background color", async () => {
+    const screen = render(
+      html`<terminal-element
+        .prompt=${[
+          { text: "main", color: "green" },
+          { text: " $", color: "cyan", bg: "black" },
+        ] as const}
+        .content=${[{ type: "input", text: "echo hello" }] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toHaveTextContent("main $ echo hello");
+
+    const spans = element.element().querySelectorAll("span");
+
+    expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+    expect(spans[1]).toHaveStyle({
+      color: "rgb(0, 197, 199)",
+      backgroundColor: "rgb(20, 25, 30)",
+    });
+  });
+
   it("renders the content for output type line", async () => {
     const screen = render(
       html`<terminal-element
@@ -651,6 +674,39 @@ describe("terminal-element", () => {
         .element()
         .querySelector(".terminal-element__body-caret");
       expect(caret).not.toBeNull();
+    });
+
+    it("renders prompt segments while the input line is being typed", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .typingSpeed=${100}
+          .prompt=${[
+            { text: "main", color: "green" },
+            { text: " $", color: "cyan", bg: "black" },
+          ] as const}
+          .content=${[{ type: "input", text: "1234567890" }] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      vi.advanceTimersByTime(200);
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      await expect.element(content).toHaveTextContent("main $ 123");
+
+      const spans = content.element().querySelectorAll("span");
+
+      expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+      expect(spans[1]).toHaveStyle({
+        color: "rgb(0, 197, 199)",
+        backgroundColor: "rgb(20, 25, 30)",
+      });
     });
   });
 

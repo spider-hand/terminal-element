@@ -28,6 +28,8 @@ export type Segment = {
   bg?: AnsiColorType;
 };
 
+export type Prompt = string | Segment[];
+
 export type InputLine = {
   type: "input";
   text: string;
@@ -52,7 +54,7 @@ export interface TerminalElementProps {
   height?: string;
   theme?: ThemeType;
   currentDirectory?: string;
-  prompt?: string;
+  prompt?: Prompt;
   content?: Line[];
   animated?: boolean;
   typingSpeed?: number;
@@ -67,7 +69,7 @@ export class TerminalElement extends LitElement {
   @property({ type: String }) height = "360px";
   @property({ type: String, reflect: true }) theme: ThemeType = "dark";
   @property({ type: String }) currentDirectory = "";
-  @property({ type: String }) prompt = "$";
+  @property({ type: String }) prompt: Prompt = "$";
   @property({ type: Array }) content: Line[] = [];
   @property({ type: Boolean }) animated = false;
   @property({ type: Number }) typingSpeed = 100;
@@ -369,7 +371,7 @@ export class TerminalElement extends LitElement {
       if (line.type === "input") {
         // prettier-ignore
         // to prevent the formatter from breaking the template literal
-        return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
+        return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;
       } else if ("text" in line) {
         // prettier-ignore
         return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
@@ -377,10 +379,7 @@ export class TerminalElement extends LitElement {
         // prettier-ignore
         return html`<div class="terminal-element__body-line">${line.segments.length === 0
           ? html`&nbsp;`
-          : line.segments.map(
-              (segment) =>
-                html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"}; background-color: ${segment.bg ? `var(--terminal-element-ansi-${segment.bg})` : "inherit"};">${segment.text}</span>`,
-            )}</div>`;
+          : line.segments.map((segment) => this._renderSegment(segment))}</div>`;
       }
     });
   }
@@ -408,7 +407,7 @@ export class TerminalElement extends LitElement {
   private _renderFullLine(line: Line) {
     if (line.type === "input") {
       // prettier-ignore
-      return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${line.text}</span></div>`;
+      return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;
     } else if ("text" in line) {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
@@ -416,17 +415,32 @@ export class TerminalElement extends LitElement {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${line.segments.length === 0
         ? html`&nbsp;`
-        : line.segments.map(
-            (segment) =>
-              html`<span style="color: ${segment.color ? `var(--terminal-element-ansi-${segment.color})` : "inherit"}; background-color: ${segment.bg ? `var(--terminal-element-ansi-${segment.bg})` : "inherit"};">${segment.text}</span>`,
-          )}</div>`;
+        : line.segments.map((segment) => this._renderSegment(segment))}</div>`;
     }
   }
 
   private _renderPartialInputLine(line: InputLine) {
     const visibleText = line.text.slice(0, this._currentCharInLine);
     // prettier-ignore
-    return html`<div class="terminal-element__body-line"><span>${this.prompt}&nbsp;</span><span class="terminal-element__body-segment">${visibleText}</span><span class="terminal-element__body-caret"></span></div>`;
+    return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${visibleText}</span><span class="terminal-element__body-caret"></span></div>`;
+  }
+
+  private _renderPrompt() {
+    const segments =
+      typeof this.prompt === "string" ? [{ text: this.prompt }] : this.prompt;
+
+    return html`${segments.map((segment) => this._renderSegment(segment))}&nbsp;`;
+  }
+
+  private _renderSegment(segment: Segment) {
+    return html`<span
+      style="color: ${segment.color
+        ? `var(--terminal-element-ansi-${segment.color})`
+        : "inherit"}; background-color: ${segment.bg
+        ? `var(--terminal-element-ansi-${segment.bg})`
+        : "inherit"};"
+      >${segment.text}</span
+    >`;
   }
 
   render() {
