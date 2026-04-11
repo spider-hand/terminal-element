@@ -32,11 +32,13 @@ export type Prompt = string | Segment[];
 
 export type InputLine = {
   type: "input";
+  id?: string;
   text: string;
 };
 
 export type OutputLineText = {
   type: "output";
+  id?: string;
   text: string;
   color?: AnsiColorType;
   delay?: number;
@@ -44,6 +46,7 @@ export type OutputLineText = {
 
 export type OutputLineSegments = {
   type: "output";
+  id?: string;
   segments: Segment[];
   delay?: number;
 };
@@ -54,9 +57,26 @@ export type EraseLine = {
   delay?: number;
 };
 
+export type LineUpdateText = {
+  type: "update";
+  targetId: string;
+  text: string;
+  color?: AnsiColorType;
+  delay?: number;
+};
+
+export type LineUpdateSegments = {
+  type: "update";
+  targetId: string;
+  segments: Segment[];
+  delay?: number;
+};
+
+export type LineUpdate = LineUpdateText | LineUpdateSegments;
+
 export type VisibleLine = InputLine | OutputLineText | OutputLineSegments;
 
-export type Line = VisibleLine | EraseLine;
+export type Line = VisibleLine | EraseLine | LineUpdate;
 
 export interface TerminalElementProps {
   width?: string;
@@ -403,12 +423,39 @@ export class TerminalElement extends LitElement {
       if (line.type === "erase") {
         const count = Math.max(0, line.count);
         visibleLines.splice(Math.max(0, visibleLines.length - count), count);
+      } else if (line.type === "update") {
+        const targetIndex = visibleLines.findIndex(
+          (visibleLine) => visibleLine.id === line.targetId,
+        );
+
+        if (targetIndex !== -1) {
+          visibleLines[targetIndex] = this._buildUpdatedLine(line);
+        }
       } else {
         visibleLines.push(line);
       }
     }
 
     return visibleLines;
+  }
+
+  private _buildUpdatedLine(
+    line: LineUpdate,
+  ): OutputLineText | OutputLineSegments {
+    if ("text" in line) {
+      return {
+        type: "output",
+        id: line.targetId,
+        text: line.text,
+        color: line.color,
+      };
+    }
+
+    return {
+      type: "output",
+      id: line.targetId,
+      segments: line.segments,
+    };
   }
 
   private _renderFullLine(line: VisibleLine) {

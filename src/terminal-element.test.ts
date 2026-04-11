@@ -177,6 +177,74 @@ describe("terminal-element", () => {
     expect(element.element().textContent?.trim()).toBe("");
   });
 
+  it("updates a rendered line with text update", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", id: "status", text: "Loading..." },
+          {
+            type: "update",
+            targetId: "status",
+            text: "Done",
+            color: "green",
+          },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    const text = element.element().textContent || "";
+    expect(text).not.toContain("Loading...");
+    await expect.element(element).toHaveTextContent("Done");
+
+    const span = element.element().querySelector("span");
+    expect(span).toHaveStyle({ color: "rgb(0, 194, 0)" });
+  });
+
+  it("updates a rendered line with segment update", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", id: "status", text: "Loading..." },
+          {
+            type: "update",
+            targetId: "status",
+            segments: [{ text: "Done", color: "green" }, { text: "!" }],
+          },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    const text = element.element().textContent || "";
+    expect(text).not.toContain("Loading...");
+    await expect.element(element).toHaveTextContent("Done!");
+
+    const spans = element.element().querySelectorAll("span");
+    expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+  });
+
+  it("does nothing when update target is not found", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", id: "status", text: "Loading..." },
+          { type: "update", targetId: "missing", text: "Done" },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    await expect.element(element).toHaveTextContent("Loading...");
+    expect(element.element().textContent || "").not.toContain("Done");
+  });
+
   it("renders the line break for empty output line with segments", async () => {
     const screen = render(
       html`<terminal-element
@@ -607,6 +675,44 @@ describe("terminal-element", () => {
             { type: "output", text: "Loading..." },
             { type: "erase", count: 1, delay: 500 },
             { type: "output", text: "Done" },
+          ] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      await expect.element(content).toHaveTextContent("Loading...");
+      expect(content.element().textContent || "").not.toContain("Done");
+
+      vi.advanceTimersByTime(499);
+      await el.updateComplete;
+
+      await expect.element(content).toHaveTextContent("Loading...");
+
+      vi.advanceTimersByTime(1);
+      await el.updateComplete;
+
+      const text = content.element().textContent || "";
+      expect(text).not.toContain("Loading...");
+      await expect.element(content).toHaveTextContent("Done");
+    });
+
+    it("updates previous content after update delay", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .content=${[
+            { type: "output", id: "status", text: "Loading..." },
+            {
+              type: "update",
+              targetId: "status",
+              text: "Done",
+              delay: 500,
+            },
           ] as const}
         ></terminal-element>`,
       );

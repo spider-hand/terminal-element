@@ -302,6 +302,7 @@ export const BubbleTea: Story = {
       },
       {
         type: "output",
+        id: "bubbletea-countdown",
         segments: [
           {
             text: "  Program quits in ",
@@ -325,9 +326,43 @@ export const BubbleTea: Story = {
         color: "black-bright",
       },
       {
+        type: "update",
+        targetId: "bubbletea-countdown",
+        delay: 1000,
+        segments: [
+          {
+            text: "  Program quits in ",
+          },
+          {
+            text: "9 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds",
+          },
+        ],
+      },
+      {
+        type: "update",
+        targetId: "bubbletea-countdown",
+        delay: 1000,
+        segments: [
+          {
+            text: "  Program quits in ",
+          },
+          {
+            text: "8 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds",
+          },
+        ],
+      },
+      {
         type: "erase",
         count: 10,
-        delay: 2000,
+        delay: 200,
       },
       {
         type: "output",

@@ -65,13 +65,14 @@ prompt = [
 
 ### Line
 
-The `content` prop accepts an array of `Line` objects. There are two types:
+The `content` prop accepts an array of `Line` objects. Lines can render visible content or update previously rendered content.
 
 **InputLine** - Displays a command with prompt:
 
 ```typescript
 type InputLine = {
   type: "input";
+  id?: string;
   text: string;
 };
 ```
@@ -82,6 +83,7 @@ type InputLine = {
 // Simple text output
 type OutputLineText = {
   type: "output";
+  id?: string;
   text: string;
   color?: AnsiColorType;
   delay?: number; // Delay in ms before showing this line (animation only)
@@ -90,6 +92,7 @@ type OutputLineText = {
 // Colored segments output
 type OutputLineSegments = {
   type: "output";
+  id?: string;
   segments: Segment[];
   delay?: number;
 };
@@ -106,6 +109,22 @@ type EraseLine = {
   count: number;
   delay?: number;
 };
+
+// Update a previously rendered line by id
+type LineUpdateText = {
+  type: "update";
+  targetId: string;
+  text: string;
+  color?: AnsiColorType;
+  delay?: number;
+};
+
+type LineUpdateSegments = {
+  type: "update";
+  targetId: string;
+  segments: Segment[];
+  delay?: number;
+};
 ```
 
 **Example:**
@@ -114,7 +133,14 @@ type EraseLine = {
 content = [
   { type: "input", text: "npm install" },
   { type: "output", text: "" },
-  { type: "output", text: "Installing..." },
+  { type: "output", id: "install-status", text: "Installing..." },
+  {
+    type: "update",
+    targetId: "install-status",
+    text: "Resolving packages...",
+    color: "yellow",
+    delay: 800,
+  },
   { type: "erase", count: 1, delay: 800 },
   {
     type: "output",
