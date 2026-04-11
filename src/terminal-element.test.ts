@@ -108,6 +108,23 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("Plain output text");
   });
 
+  it("renders the content for output type line with text field and color", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          { type: "output", text: "Plain colored output", color: "red" },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toHaveTextContent("Plain colored output");
+
+    const span = element.element().querySelector("span");
+
+    expect(span).toHaveStyle({ color: "rgb(180, 60, 41)" });
+  });
+
   it("renders the line break for empty output line with segments", async () => {
     const screen = render(
       html`<terminal-element

@@ -83,6 +83,7 @@ type InputLine = {
 type OutputLineText = {
   type: "output";
   text: string;
+  color?: AnsiColorType;
   delay?: number; // Delay in ms before showing this line (animation only)
 };
 
@@ -106,7 +107,12 @@ type Segment = {
 content = [
   { type: "input", text: "npm install" },
   { type: "output", text: "" },
-  { type: "output", text: "added 50 packages in 2s", delay: 500 },
+  {
+    type: "output",
+    text: "added 50 packages in 2s",
+    color: "green",
+    delay: 500,
+  },
   {
     type: "output",
     segments: [{ text: "✓", color: "green" }, { text: " Done!" }],

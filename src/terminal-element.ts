@@ -38,6 +38,7 @@ export type InputLine = {
 export type OutputLineText = {
   type: "output";
   text: string;
+  color?: AnsiColorType;
   delay?: number;
 };
 
@@ -374,7 +375,7 @@ export class TerminalElement extends LitElement {
         return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;
       } else if ("text" in line) {
         // prettier-ignore
-        return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
+        return html`<div class="terminal-element__body-line">${this._renderOutputLine(line)}</div>`;
       } else {
         // prettier-ignore
         return html`<div class="terminal-element__body-line">${line.segments.length === 0
@@ -410,7 +411,7 @@ export class TerminalElement extends LitElement {
       return html`<div class="terminal-element__body-line">${this._renderPrompt()}<span class="terminal-element__body-segment">${line.text}</span></div>`;
     } else if ("text" in line) {
       // prettier-ignore
-      return html`<div class="terminal-element__body-line">${line.text !== "" ? line.text : html`&nbsp;`}</div>`;
+      return html`<div class="terminal-element__body-line">${this._renderOutputLine(line)}</div>`;
     } else {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${line.segments.length === 0
@@ -430,6 +431,19 @@ export class TerminalElement extends LitElement {
       typeof this.prompt === "string" ? [{ text: this.prompt }] : this.prompt;
 
     return html`${segments.map((segment) => this._renderSegment(segment))}&nbsp;`;
+  }
+
+  private _renderOutputLine(line: OutputLineText) {
+    if (line.text === "") {
+      return html`&nbsp;`;
+    }
+
+    return html`<span
+      style="color: ${line.color
+        ? `var(--terminal-element-ansi-${line.color})`
+        : "inherit"};"
+      >${line.text}</span
+    >`;
   }
 
   private _renderSegment(segment: Segment) {
