@@ -245,6 +245,27 @@ describe("terminal-element", () => {
     expect(element.element().textContent || "").not.toContain("Done");
   });
 
+  it("renders progress line as complete when animation is disabled", async () => {
+    const screen = render(
+      html`<terminal-element
+        .content=${[
+          {
+            type: "progress",
+            length: 4,
+            completeIn: 1000,
+            startColor: "green",
+            endColor: "green",
+          },
+        ] as const}
+      ></terminal-element>`,
+    );
+
+    const element = screen.getByTestId("content");
+    await expect.element(element).toBeInTheDocument();
+
+    await expect.element(element).toHaveTextContent("████");
+  });
+
   it("renders the line break for empty output line with segments", async () => {
     const screen = render(
       html`<terminal-element
@@ -736,6 +757,112 @@ describe("terminal-element", () => {
 
       const text = content.element().textContent || "";
       expect(text).not.toContain("Loading...");
+      await expect.element(content).toHaveTextContent("Done");
+    });
+
+    it("renders progress line while it fills and moves to the next line after completeIn", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .content=${[
+            {
+              type: "progress",
+              length: 4,
+              completeIn: 100,
+              startColor: "green",
+              endColor: "green",
+            },
+            { type: "output", text: "Done" },
+          ] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      expect(content.element().textContent?.trim()).toBe("");
+
+      vi.advanceTimersByTime(50);
+      await el.updateComplete;
+
+      await expect.element(content).toHaveTextContent("██");
+      expect(content.element().textContent || "").not.toContain("Done");
+
+      vi.advanceTimersByTime(50);
+      await el.updateComplete;
+
+      await expect.element(content).toHaveTextContent("████");
+      await expect.element(content).toHaveTextContent("Done");
+    });
+
+    it("does not render progress line before its delay", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .content=${[
+            {
+              type: "progress",
+              length: 4,
+              completeIn: 100,
+              delay: 500,
+              indent: 2,
+              incompleteChar: ".",
+              startColor: "green",
+              endColor: "green",
+            },
+          ] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      expect(content.element().textContent?.trim()).toBe("");
+
+      vi.advanceTimersByTime(499);
+      await el.updateComplete;
+
+      expect(content.element().textContent?.trim()).toBe("");
+
+      vi.advanceTimersByTime(1);
+      await el.updateComplete;
+
+      const line = content
+        .element()
+        .querySelector(".terminal-element__body-line");
+      expect(line?.textContent).toBe("  ....");
+    });
+
+    it("completes progress line immediately when completeIn is zero", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .content=${[
+            {
+              type: "progress",
+              length: 4,
+              completeIn: 0,
+              startColor: "green",
+              endColor: "green",
+            },
+            { type: "output", text: "Done" },
+          ] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      await expect.element(content).toHaveTextContent("████");
       await expect.element(content).toHaveTextContent("Done");
     });
 

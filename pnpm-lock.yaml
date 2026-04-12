@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      chroma-js:
+        specifier: ^3.2.0
+        version: 3.2.0
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^5.0.2
@@ -29,6 +33,9 @@ importers:
       '@storybook/web-components-vite':
         specifier: ^10.3.1
         version: 10.3.1(esbuild@0.27.4)(lit@3.3.2)(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(vite@8.0.1(esbuild@0.27.4)(yaml@2.8.2))
+      '@types/chroma-js':
+        specifier: ^3.1.2
+        version: 3.1.2
       '@vitest/browser-playwright':
         specifier: ^4.1.0
         version: 4.1.0(playwright@1.58.2)(vite@8.0.1(esbuild@0.27.4)(yaml@2.8.2))(vitest@4.1.0)
@@ -704,6 +711,9 @@ packages:
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
+  '@types/chroma-js@3.1.2':
+    resolution: {integrity: sha512-YBTQqArPN8A0niHXCwrO1z5x++a+6l0mLBykncUpr23oIPW7L4h39s6gokdK/bDrPmSh8+TjMmrhBPnyiaWPmQ==}
+
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
@@ -948,6 +958,9 @@ packages:
   check-error@2.1.3:
     resolution: {integrity: sha512-PAJdDJusoxnwm1VwW07VWwUN1sl7smmC3OKggvndJFadxxDRyFJBX/ggnu/KE4kQAB7a3Dp8f/YXC1FlUprWmA==}
     engines: {node: '>= 16'}
+
+  chroma-js@3.2.0:
+    resolution: {integrity: sha512-os/OippSlX1RlWWr+QDPcGUZs0uoqr32urfxESG9U93lhUfbnlyckte84Q8P1UQY/qth983AS1JONKmLS4T0nw==}
 
   chromatic@13.3.5:
     resolution: {integrity: sha512-MzPhxpl838qJUo0A55osCF2ifwPbjcIPeElr1d4SHcjnHoIcg7l1syJDrAYK/a+PcCBrOGi06jPNpQAln5hWgw==}
@@ -2691,6 +2704,8 @@ snapshots:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
 
+  '@types/chroma-js@3.1.2': {}
+
   '@types/deep-eql@4.0.2': {}
 
   '@types/esrecurse@4.3.1': {}
@@ -3002,6 +3017,8 @@ snapshots:
   chai@6.2.2: {}
 
   check-error@2.1.3: {}
+
+  chroma-js@3.2.0: {}
 
   chromatic@13.3.5: {}
 

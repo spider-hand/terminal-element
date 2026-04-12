@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import chroma from "chroma-js";
 
 export type ThemeType = "light" | "dark";
 
@@ -57,6 +58,19 @@ export type EraseLine = {
   delay?: number;
 };
 
+export type ProgressBarLine = {
+  type: "progress";
+  id?: string;
+  length: number;
+  completeIn: number;
+  startColor?: AnsiColorType;
+  endColor?: AnsiColorType;
+  indent?: number;
+  completeChar?: string;
+  incompleteChar?: string;
+  delay?: number;
+};
+
 export type LineUpdateText = {
   type: "update";
   targetId: string;
@@ -74,7 +88,11 @@ export type LineUpdateSegments = {
 
 export type LineUpdate = LineUpdateText | LineUpdateSegments;
 
-export type VisibleLine = InputLine | OutputLineText | OutputLineSegments;
+export type VisibleLine =
+  | InputLine
+  | OutputLineText
+  | OutputLineSegments
+  | ProgressBarLine;
 
 export type Line = VisibleLine | EraseLine | LineUpdate;
 
@@ -108,10 +126,14 @@ export class TerminalElement extends LitElement {
 
   @state() private _currentLineIndex = 0;
   @state() private _currentCharInLine = 0;
+  @state() private _currentProgressRatio = 0;
+  @state() private _isProgressLineVisible = false;
   @state() private _isAnimating = false;
   @state() private _isWaitingToRestart = false;
 
   private _animationTimer: number | null = null;
+  private _currentProgressElapsed = 0;
+  private readonly _progressTickInterval = 50;
 
   static styles = css`
     :host {
@@ -302,6 +324,9 @@ export class TerminalElement extends LitElement {
   private _startAnimation() {
     this._currentLineIndex = 0;
     this._currentCharInLine = 0;
+    this._currentProgressElapsed = 0;
+    this._currentProgressRatio = 0;
+    this._isProgressLineVisible = false;
     this._isAnimating = true;
     this._isWaitingToRestart = false;
     this._processCurrentLine();
@@ -330,6 +355,16 @@ export class TerminalElement extends LitElement {
 
     if (currentLine.type === "input") {
       this._tickInputLine();
+    } else if (currentLine.type === "progress") {
+      const delay = currentLine.delay ?? 0;
+      if (delay > 0) {
+        this._isProgressLineVisible = false;
+        this._animationTimer = setTimeout(() => {
+          this._startProgressLine();
+        }, delay);
+      } else {
+        this._startProgressLine();
+      }
     } else {
       const delay = currentLine.delay ?? 0;
       if (delay > 0) {
@@ -342,6 +377,48 @@ export class TerminalElement extends LitElement {
         this._moveToNextLine();
       }
     }
+  }
+
+  private _startProgressLine() {
+    const line = this.content[this._currentLineIndex];
+    if (line.type !== "progress") return;
+
+    this._currentProgressElapsed = 0;
+    this._currentProgressRatio = line.completeIn <= 0 ? 1 : 0;
+    this._isProgressLineVisible = true;
+    this.requestUpdate();
+
+    if (line.completeIn <= 0) {
+      this._moveToNextLine();
+      return;
+    }
+
+    this._animationTimer = setTimeout(
+      () => this._tickProgressLine(),
+      this._progressTickInterval,
+    );
+  }
+
+  private _tickProgressLine() {
+    const line = this.content[this._currentLineIndex];
+    if (line.type !== "progress") return;
+
+    this._currentProgressElapsed = Math.min(
+      line.completeIn,
+      this._currentProgressElapsed + this._progressTickInterval,
+    );
+    this._currentProgressRatio = this._currentProgressElapsed / line.completeIn;
+    this.requestUpdate();
+
+    if (this._currentProgressRatio >= 1) {
+      this._moveToNextLine();
+      return;
+    }
+
+    this._animationTimer = setTimeout(
+      () => this._tickProgressLine(),
+      this._progressTickInterval,
+    );
   }
 
   private _tickInputLine() {
@@ -364,6 +441,9 @@ export class TerminalElement extends LitElement {
   private _moveToNextLine() {
     this._currentLineIndex++;
     this._currentCharInLine = 0;
+    this._currentProgressElapsed = 0;
+    this._currentProgressRatio = 0;
+    this._isProgressLineVisible = false;
     this._processCurrentLine();
   }
 
@@ -372,6 +452,9 @@ export class TerminalElement extends LitElement {
       clearTimeout(this._animationTimer);
       this._animationTimer = null;
     }
+    this._currentProgressElapsed = 0;
+    this._currentProgressRatio = 0;
+    this._isProgressLineVisible = false;
     this._isAnimating = false;
     this._isWaitingToRestart = false;
   }
@@ -408,9 +491,12 @@ export class TerminalElement extends LitElement {
 
     const line = this.content[this._currentLineIndex];
 
-    // Render the current animating line with typing effect.
     if (line?.type === "input") {
+      // Render the current animating line with typing effect
       result.push(this._renderPartialInputLine(line));
+    } else if (line?.type === "progress" && this._isProgressLineVisible) {
+      // Render the current animating progress line with the current progress ratio
+      result.push(this._renderProgressLine(line, this._currentProgressRatio));
     }
 
     return result;
@@ -465,6 +551,8 @@ export class TerminalElement extends LitElement {
     } else if ("text" in line) {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${this._renderOutputLine(line)}</div>`;
+    } else if (line.type === "progress") {
+      return this._renderProgressLine(line, 1);
     } else {
       // prettier-ignore
       return html`<div class="terminal-element__body-line">${line.segments.length === 0
@@ -497,6 +585,59 @@ export class TerminalElement extends LitElement {
         : "inherit"};"
       >${line.text}</span
     >`;
+  }
+
+  private _renderProgressLine(line: ProgressBarLine, ratio: number) {
+    // prettier-ignore
+    return html`<div class="terminal-element__body-line">${this._buildProgressSegments(line, ratio).map((segment) => this._renderProgressSegment(segment))}</div>`;
+  }
+
+  private _buildProgressSegments(line: ProgressBarLine, ratio: number) {
+    // Build the progress bar which completed the animation
+    const length = Math.max(0, Math.floor(line.length));
+    const progressRatio = Math.min(1, Math.max(0, ratio));
+    const completedLength =
+      progressRatio >= 1 ? length : Math.floor(length * progressRatio);
+    const incompleteLength = length - completedLength;
+    const indent = Math.max(0, Math.floor(line.indent ?? 0));
+    const completeChar = line.completeChar ?? "█";
+    const incompleteChar = line.incompleteChar ?? "";
+    const startColor = this._resolveProgressColor(line.startColor ?? "green");
+    const endColor = this._resolveProgressColor(line.endColor ?? "green");
+    const colorScale = chroma.scale([startColor, endColor]);
+    const segments: { text: string; color?: string }[] = [];
+
+    if (indent > 0) {
+      segments.push({ text: " ".repeat(indent) });
+    }
+
+    for (let index = 0; index < completedLength; index++) {
+      segments.push({
+        text: completeChar,
+        color: colorScale(length <= 1 ? 1 : index / (length - 1)).hex(),
+      });
+    }
+
+    if (incompleteLength > 0 && incompleteChar !== "") {
+      segments.push({ text: incompleteChar.repeat(incompleteLength) });
+    }
+
+    return segments;
+  }
+
+  private _renderProgressSegment(segment: { text: string; color?: string }) {
+    // Render a segment of the progress bar
+    // prettier-ignore
+    return html`<span style="color: ${segment.color ?? "inherit"};"
+      >${segment.text}</span
+    >`;
+  }
+
+  private _resolveProgressColor(color: AnsiColorType) {
+    const computedColor = getComputedStyle(this)
+      .getPropertyValue(`--terminal-element-ansi-${color}`)
+      .trim();
+    return computedColor;
   }
 
   private _renderSegment(segment: Segment) {

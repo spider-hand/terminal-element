@@ -1,6 +1,8 @@
 # terminal-element
 
-![demo](https://github.com/user-attachments/assets/7e96e50f-ca82-4bd5-a5e2-0a215ae30b12)
+![demo1](https://github.com/user-attachments/assets/7e96e50f-ca82-4bd5-a5e2-0a215ae30b12)
+
+![demo2](https://github.com/user-attachments/assets/2bbdac1f-e8a5-4da7-a046-28a63d7fe85f)
 
 ![npm version](https://img.shields.io/npm/v/terminal-element) ![npm downloads](https://img.shields.io/npm/dm/terminal-element) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/terminal-element) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![codecov](https://codecov.io/gh/spider-hand/terminal-element/graph/badge.svg?token=3TNWF0ZMDS)](https://codecov.io/gh/spider-hand/terminal-element) ![Lit](https://img.shields.io/badge/lit-%23324FFF.svg?&logo=lit&logoColor=white)
 
@@ -110,6 +112,20 @@ type EraseLine = {
   delay?: number;
 };
 
+// String-based progress bar output
+type ProgressBarLine = {
+  type: "progress";
+  id?: string;
+  length: number;
+  completeIn: number;
+  startColor?: AnsiColorType;
+  endColor?: AnsiColorType;
+  indent?: number;
+  completeChar?: string;
+  incompleteChar?: string;
+  delay?: number;
+};
+
 // Update a previously rendered line by id
 type LineUpdateText = {
   type: "update";
@@ -140,6 +156,14 @@ content = [
     text: "Resolving packages...",
     color: "yellow",
     delay: 800,
+  },
+  {
+    type: "progress",
+    length: 24,
+    completeIn: 1500,
+    startColor: "cyan",
+    endColor: "green-bright",
+    indent: 2,
   },
   { type: "erase", count: 1, delay: 800 },
   {

@@ -59,6 +59,7 @@
     "@storybook/addon-docs": "^10.3.1",
     "@storybook/addon-vitest": "^10.3.1",
     "@storybook/web-components-vite": "^10.3.1",
+    "@types/chroma-js": "^3.1.2",
     "@vitest/browser-playwright": "^4.1.0",
     "@vitest/coverage-v8": "^4.1.0",
     "chromatic": "^16.0.0",
@@ -89,5 +90,8 @@
       "prettier --write"
     ],
     "*.ts": "stylelint --fix"
+  },
+  "dependencies": {
+    "chroma-js": "^3.2.0"
   }
 }

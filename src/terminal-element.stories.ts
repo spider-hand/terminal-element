@@ -401,6 +401,99 @@ export const BubbleTea: Story = {
       {
         type: "output",
         text: "  Downloading...",
+        id: "download-status",
+      },
+      {
+        type: "progress",
+        completeIn: 1500,
+        length: 25,
+        indent: 2,
+        startColor: "magenta-bright",
+        endColor: "green-bright",
+      },
+      {
+        type: "update",
+        targetId: "download-status",
+        segments: [
+          {
+            text: "  Downloaded. Exiting in ",
+          },
+          {
+            text: "3 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds...",
+          },
+        ],
+      },
+      {
+        type: "update",
+        targetId: "download-status",
+        delay: 1000,
+        segments: [
+          {
+            text: "  Downloaded. Exiting in ",
+          },
+          {
+            text: "2 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds...",
+          },
+        ],
+      },
+      {
+        type: "update",
+        targetId: "download-status",
+        delay: 1000,
+        segments: [
+          {
+            text: "  Downloaded. Exiting in ",
+          },
+          {
+            text: "1 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds...",
+          },
+        ],
+      },
+      {
+        type: "update",
+        targetId: "download-status",
+        delay: 1000,
+        segments: [
+          {
+            text: "  Downloaded. Exiting in ",
+          },
+          {
+            text: "0 ",
+            color: "green-bright",
+          },
+          {
+            text: "seconds...",
+          },
+        ],
+      },
+      {
+        type: "erase",
+        count: 6,
+        delay: 1000,
+      },
+      {
+        type: "output",
+        text: "  See you later!",
+      },
+      {
+        type: "output",
+        text: "",
+      },
+      {
+        type: "input",
+        text: "",
       },
     ],
     animated: true,
