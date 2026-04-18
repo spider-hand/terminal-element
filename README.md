@@ -181,37 +181,32 @@ content = [
 
 ## Styling
 
-| Variable                                    | Default                            |
-| ------------------------------------------- | ---------------------------------- |
-| `--terminal-element-font-family`            | `monospace`                        |
-| `--terminal-element-border-radius`          | `10px`                             |
-| `--terminal-element-font-size`              | `14px`                             |
-| `--terminal-element-box-shadow`             | `rgb(0 0 0 / 56%) 0 22px 70px 4px` |
-| `--terminal-element-border-color`           | `#070707`                          |
-| `--terminal-element-header-bg`              | `#323232`                          |
-| `--terminal-element-header-border`          | `#6a6a6a`                          |
-| `--terminal-element-header-border-bottom`   | `#6a6a6a`                          |
-| `--terminal-element-header-directory-color` | `#afafb4`                          |
-| `--terminal-element-body-bg`                | `#101317`                          |
-| `--terminal-element-body-border`            | `#606060`                          |
-| `--terminal-element-body-content-color`     | `#d4d4d4`                          |
-| `--terminal-element-caret-color`            | `#fff`                             |
-| `--terminal-element-ansi-black`             | `#14191e`                          |
-| `--terminal-element-ansi-black-bright`      | `#676767`                          |
-| `--terminal-element-ansi-red`               | `#b43c29`                          |
-| `--terminal-element-ansi-red-bright`        | `#dc7974`                          |
-| `--terminal-element-ansi-green`             | `#00c200`                          |
-| `--terminal-element-ansi-green-bright`      | `#57e690`                          |
-| `--terminal-element-ansi-yellow`            | `#c7c400`                          |
-| `--terminal-element-ansi-yellow-bright`     | `#ece100`                          |
-| `--terminal-element-ansi-blue`              | `#2743c7`                          |
-| `--terminal-element-ansi-blue-bright`       | `#a6aaf1`                          |
-| `--terminal-element-ansi-magenta`           | `#bf3fbd`                          |
-| `--terminal-element-ansi-magenta-bright`    | `#e07de0`                          |
-| `--terminal-element-ansi-cyan`              | `#00c5c7`                          |
-| `--terminal-element-ansi-cyan-bright`       | `#5ffdff`                          |
-| `--terminal-element-ansi-white`             | `#c7c7c7`                          |
-| `--terminal-element-ansi-white-bright`      | `#feffff`                          |
+| Variable                                 | Default                                  |
+| ---------------------------------------- | ---------------------------------------- |
+| `--terminal-element-font-family`         | `monospace`                              |
+| `--terminal-element-border-radius`       | `10px`                                   |
+| `--terminal-element-border-color`        | Generate based on background dynamically |
+| `--terminal-element-font-size`           | `14px`                                   |
+| `--terminal-element-box-shadow`          | `rgb(0 0 0 / 56%) 0 22px 70px 4px`       |
+| `--terminal-element-background`          | `#000000`                                |
+| `--terminal-element-foreground`          | `#bbbbbb`                                |
+| `--terminal-element-caret-color`         | `#bbbbbb`                                |
+| `--terminal-element-ansi-black`          | `#000000`                                |
+| `--terminal-element-ansi-black-bright`   | `#555555`                                |
+| `--terminal-element-ansi-red`            | `#bb0000`                                |
+| `--terminal-element-ansi-red-bright`     | `#ff5555`                                |
+| `--terminal-element-ansi-green`          | `#00bb00`                                |
+| `--terminal-element-ansi-green-bright`   | `#55ff55`                                |
+| `--terminal-element-ansi-yellow`         | `#bbbb00`                                |
+| `--terminal-element-ansi-yellow-bright`  | `#ffff55`                                |
+| `--terminal-element-ansi-blue`           | `#0d0dc8`                                |
+| `--terminal-element-ansi-blue-bright`    | `#5555ff`                                |
+| `--terminal-element-ansi-magenta`        | `#bb00bb`                                |
+| `--terminal-element-ansi-magenta-bright` | `#ff55ff`                                |
+| `--terminal-element-ansi-cyan`           | `#00bbbb`                                |
+| `--terminal-element-ansi-cyan-bright`    | `#55ffff`                                |
+| `--terminal-element-ansi-white`          | `#bbbbbb`                                |
+| `--terminal-element-ansi-white-bright`   | `#ffffff`                                |
 
 ## Contributing
 

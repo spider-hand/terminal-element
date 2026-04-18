@@ -75,10 +75,10 @@ describe("terminal-element", () => {
 
     const spans = element.element().querySelectorAll("span");
 
-    expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+    expect(spans[0]).toHaveStyle({ color: "rgb(0, 187, 0)" });
     expect(spans[1]).toHaveStyle({
-      color: "rgb(0, 197, 199)",
-      backgroundColor: "rgb(20, 25, 30)",
+      color: "rgb(0, 187, 187)",
+      backgroundColor: "rgb(0, 0, 0)",
     });
   });
 
@@ -122,7 +122,7 @@ describe("terminal-element", () => {
 
     const span = element.element().querySelector("span");
 
-    expect(span).toHaveStyle({ color: "rgb(180, 60, 41)" });
+    expect(span).toHaveStyle({ color: "rgb(187, 0, 0)" });
   });
 
   it("removes previous content with erase line", async () => {
@@ -200,7 +200,7 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("Done");
 
     const span = element.element().querySelector("span");
-    expect(span).toHaveStyle({ color: "rgb(0, 194, 0)" });
+    expect(span).toHaveStyle({ color: "rgb(0, 187, 0)" });
   });
 
   it("updates a rendered line with segment update", async () => {
@@ -225,7 +225,7 @@ describe("terminal-element", () => {
     await expect.element(element).toHaveTextContent("Done!");
 
     const spans = element.element().querySelectorAll("span");
-    expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+    expect(spans[0]).toHaveStyle({ color: "rgb(0, 187, 0)" });
   });
 
   it("does nothing when update target is not found", async () => {
@@ -329,8 +329,8 @@ describe("terminal-element", () => {
 
     const spans = element.element().querySelectorAll("span");
 
-    expect(spans[0]).toHaveStyle({ color: "rgb(180, 60, 41)" });
-    expect(spans[1]).toHaveStyle({ color: "rgb(212, 212, 212)" });
+    expect(spans[0]).toHaveStyle({ color: "rgb(187, 0, 0)" });
+    expect(spans[1]).toHaveStyle({ color: "rgb(187, 187, 187)" });
   });
 
   it("renders the content with background color", async () => {
@@ -351,7 +351,7 @@ describe("terminal-element", () => {
     const spans = element.element().querySelectorAll("span");
 
     expect(spans[0]).toHaveStyle({
-      backgroundColor: "rgb(180, 60, 41)",
+      backgroundColor: "rgb(187, 0, 0)",
     });
     expect(spans[1]).toHaveStyle({ backgroundColor: "inherit" });
   });
@@ -1038,10 +1038,10 @@ describe("terminal-element", () => {
 
       const spans = content.element().querySelectorAll("span");
 
-      expect(spans[0]).toHaveStyle({ color: "rgb(0, 194, 0)" });
+      expect(spans[0]).toHaveStyle({ color: "rgb(0, 187, 0)" });
       expect(spans[1]).toHaveStyle({
-        color: "rgb(0, 197, 199)",
-        backgroundColor: "rgb(20, 25, 30)",
+        color: "rgb(0, 187, 187)",
+        backgroundColor: "rgb(0, 0, 0)",
       });
     });
   });

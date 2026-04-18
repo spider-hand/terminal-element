@@ -156,67 +156,65 @@ export class TerminalElement extends LitElement {
       --terminal-element-font-family: monospace;
       --terminal-element-font-size: 14px;
       --terminal-element-border-radius: 10px;
+      --terminal-element-border-color: color-mix(
+        in srgb,
+        var(--terminal-element-background),
+        white 25%
+      );
       --terminal-element-box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
 
       /** UI colors */
-      --terminal-element-border-color: #070707;
-      --terminal-element-header-bg: #323232;
-      --terminal-element-header-border: #6a6a6a;
-      --terminal-element-header-border-bottom: #6a6a6a;
-      --terminal-element-header-directory-color: #afafb4;
-      --terminal-element-body-bg: #101317;
-      --terminal-element-body-border: #606060;
-      --terminal-element-body-content-color: #d4d4d4;
-      --terminal-element-caret-color: #fff;
+      --terminal-element-background: #000;
+      --terminal-element-foreground: #bbb;
+      --terminal-element-caret-color: #bbb;
 
       /** ANSI colors */
-      --terminal-element-ansi-black: #14191e;
-      --terminal-element-ansi-black-bright: #676767;
-      --terminal-element-ansi-red: #b43c29;
-      --terminal-element-ansi-red-bright: #dc7974;
-      --terminal-element-ansi-green: #00c200;
-      --terminal-element-ansi-green-bright: #57e690;
-      --terminal-element-ansi-yellow: #c7c400;
-      --terminal-element-ansi-yellow-bright: #ece100;
-      --terminal-element-ansi-blue: #2743c7;
-      --terminal-element-ansi-blue-bright: #a6aaf1;
-      --terminal-element-ansi-magenta: #bf3fbd;
-      --terminal-element-ansi-magenta-bright: #e07de0;
-      --terminal-element-ansi-cyan: #00c5c7;
-      --terminal-element-ansi-cyan-bright: #5ffdff;
-      --terminal-element-ansi-white: #c7c7c7;
-      --terminal-element-ansi-white-bright: #feffff;
+      --terminal-element-ansi-black: #000;
+      --terminal-element-ansi-black-bright: #555;
+      --terminal-element-ansi-red: #b00;
+      --terminal-element-ansi-red-bright: #f55;
+      --terminal-element-ansi-green: #0b0;
+      --terminal-element-ansi-green-bright: #5f5;
+      --terminal-element-ansi-yellow: #bb0;
+      --terminal-element-ansi-yellow-bright: #ff5;
+      --terminal-element-ansi-blue: #0d0dc8;
+      --terminal-element-ansi-blue-bright: #55f;
+      --terminal-element-ansi-magenta: #b0b;
+      --terminal-element-ansi-magenta-bright: #f5f;
+      --terminal-element-ansi-cyan: #0bb;
+      --terminal-element-ansi-cyan-bright: #5ff;
+      --terminal-element-ansi-white: #bbb;
+      --terminal-element-ansi-white-bright: #fff;
     }
 
     :host([theme="light"]) {
       /** UI colors */
-      --terminal-element-border-color: #cdcdcd;
-      --terminal-element-header-bg: #f4f4f8;
-      --terminal-element-header-border: #f1f1f4;
-      --terminal-element-header-border-bottom: #dfdfdf;
-      --terminal-element-header-directory-color: #393939;
-      --terminal-element-body-bg: #fff;
-      --terminal-element-body-border: transparent;
-      --terminal-element-body-content-color: #0c0c0c;
-      --terminal-element-caret-color: #808080;
+      --terminal-element-background: #fff;
+      --terminal-element-foreground: #000;
+      --terminal-element-caret-color: #000;
+      --terminal-element-border-color: color-mix(
+        in srgb,
+        var(--terminal-element-background),
+        black 25%
+      );
 
       /** ANSI colors */
       --terminal-element-ansi-black: #000;
-      --terminal-element-ansi-black-bright: #808080;
-      --terminal-element-ansi-red: #900;
-      --terminal-element-ansi-red-bright: #e60000;
-      --terminal-element-ansi-green: #00a600;
-      --terminal-element-ansi-green-bright: #00d900;
-      --terminal-element-ansi-yellow: #990;
-      --terminal-element-ansi-yellow-bright: #e6e600;
-      --terminal-element-ansi-blue: #0000b2;
-      --terminal-element-ansi-blue-bright: #00f;
-      --terminal-element-ansi-magenta: #b200b2;
-      --terminal-element-ansi-magenta-bright: #e600e6;
-      --terminal-element-ansi-cyan: #00a6b2;
-      --terminal-element-ansi-cyan-bright: #00e6e6;
-      --terminal-element-ansi-white: #bfbfbf;
-      --terminal-element-ansi-white-bright: #e6e6e6;
+      --terminal-element-ansi-black-bright: #555;
+      --terminal-element-ansi-red: #b00;
+      --terminal-element-ansi-red-bright: #f55;
+      --terminal-element-ansi-green: #0b0;
+      --terminal-element-ansi-green-bright: #2fd92f;
+      --terminal-element-ansi-yellow: #bb0;
+      --terminal-element-ansi-yellow-bright: #bfbf15;
+      --terminal-element-ansi-blue: #00b;
+      --terminal-element-ansi-blue-bright: #55f;
+      --terminal-element-ansi-magenta: #b0b;
+      --terminal-element-ansi-magenta-bright: #f5f;
+      --terminal-element-ansi-cyan: #0bb;
+      --terminal-element-ansi-cyan-bright: #2cc;
+      --terminal-element-ansi-white: #bbb;
+      --terminal-element-ansi-white-bright: #fff;
     }
 
     * {
@@ -240,11 +238,7 @@ export class TerminalElement extends LitElement {
       justify-content: center;
       height: 28px;
       padding: 0 16px;
-      background-color: var(--terminal-element-header-bg);
-      border-top: 1px solid var(--terminal-element-header-border);
-      border-right: 1px solid var(--terminal-element-header-border);
-      border-bottom: 1px solid var(--terminal-element-header-border-bottom);
-      border-left: 1px solid var(--terminal-element-header-border);
+      background-color: var(--terminal-element-background);
     }
 
     .terminal-element__header-controls {
@@ -276,23 +270,21 @@ export class TerminalElement extends LitElement {
     .terminal-element__header-directory {
       font-size: 12px;
       font-weight: 600;
-      color: var(--terminal-element-header-directory-color);
+      color: var(--terminal-element-foreground);
+      opacity: 0.9;
     }
 
     .terminal-element__body {
       flex: 1;
       padding: 4px;
-      background-color: var(--terminal-element-body-bg);
-      border-right: solid 1px var(--terminal-element-body-border);
-      border-bottom: solid 1px var(--terminal-element-body-border);
-      border-left: solid 1px var(--terminal-element-body-border);
+      background-color: var(--terminal-element-background);
     }
 
     .terminal-element__body-content {
       font-family: var(--terminal-element-font-family);
       font-size: var(--terminal-element-font-size);
       font-weight: 400;
-      color: var(--terminal-element-body-content-color);
+      color: var(--terminal-element-foreground);
     }
 
     .terminal-element__body-line {
