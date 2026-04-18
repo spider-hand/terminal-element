@@ -1,13 +1,25 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import "terminal-element";
-import type { Line, ThemeType } from "terminal-element";
+// import "../../dist/terminal-element.es.js";
+import type {
+  Line,
+  Prompt,
+  ThemeType,
+} from "terminal-element";
 
 const theme = ref<ThemeType>("dark");
 const animated = ref(true);
 const loop = ref(true);
+const selectedExample = ref<string>("example1");
 
-const content: Line[] = [
+type Example = {
+  label: string;
+  prompt?: Prompt;
+  content: Line[];
+};
+
+const testContent: Line[] = [
   { type: "input", text: "pnpm run test" },
   { type: "output", text: "" },
   {
@@ -97,11 +109,275 @@ const content: Line[] = [
     ],
   },
 ];
+
+const bubbleTeaPrompt: Prompt = [
+  { text: "thunderclap:", color: "cyan" },
+  { text: "~ ", color: "red" },
+  { text: "christian ", color: "cyan" },
+  { text: "$", color: "red" },
+];
+
+const bubbleTeaContent: Line[] = [
+  {
+    type: "input",
+    text: "./demo",
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    text: "  What to do today?",
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    color: "magenta-bright",
+    text: "  [x] Plant carrots",
+  },
+  {
+    type: "output",
+    text: "  [ ] Go to the market",
+  },
+  {
+    type: "output",
+    text: "  [ ] Read something",
+  },
+  {
+    type: "output",
+    text: "  [ ] See friends",
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    id: "bubbletea-countdown",
+    segments: [
+      {
+        text: "  Program quits in ",
+      },
+      {
+        text: "10 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds",
+      },
+    ],
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    text: "  j/k, up/down: select   enter: choice   q: esc: quit",
+    color: "black-bright",
+  },
+  {
+    type: "update",
+    targetId: "bubbletea-countdown",
+    delay: 1000,
+    segments: [
+      {
+        text: "  Program quits in ",
+      },
+      {
+        text: "9 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds",
+      },
+    ],
+  },
+  {
+    type: "update",
+    targetId: "bubbletea-countdown",
+    delay: 1000,
+    segments: [
+      {
+        text: "  Program quits in ",
+      },
+      {
+        text: "8 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds",
+      },
+    ],
+  },
+  {
+    type: "erase",
+    count: 10,
+    delay: 200,
+  },
+  {
+    type: "output",
+    text: "  Carrot planting?",
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    segments: [
+      {
+        text: "  Cool, we'll need ",
+      },
+      {
+        text: "libgarden ",
+        color: "magenta-bright",
+      },
+      {
+        text: "and ",
+      },
+      {
+        text: "vegeutils",
+        color: "magenta-bright",
+      },
+      {
+        text: "...",
+      },
+    ],
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "output",
+    text: "  Downloading...",
+    id: "download-status",
+  },
+  {
+    type: "progress",
+    completeIn: 1500,
+    length: 25,
+    indent: 2,
+    startColor: "magenta-bright",
+    endColor: "green-bright",
+  },
+  {
+    type: "update",
+    targetId: "download-status",
+    segments: [
+      {
+        text: "  Downloaded. Exiting in ",
+      },
+      {
+        text: "3 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds...",
+      },
+    ],
+  },
+  {
+    type: "update",
+    targetId: "download-status",
+    delay: 1000,
+    segments: [
+      {
+        text: "  Downloaded. Exiting in ",
+      },
+      {
+        text: "2 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds...",
+      },
+    ],
+  },
+  {
+    type: "update",
+    targetId: "download-status",
+    delay: 1000,
+    segments: [
+      {
+        text: "  Downloaded. Exiting in ",
+      },
+      {
+        text: "1 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds...",
+      },
+    ],
+  },
+  {
+    type: "update",
+    targetId: "download-status",
+    delay: 1000,
+    segments: [
+      {
+        text: "  Downloaded. Exiting in ",
+      },
+      {
+        text: "0 ",
+        color: "green-bright",
+      },
+      {
+        text: "seconds...",
+      },
+    ],
+  },
+  {
+    type: "erase",
+    count: 6,
+    delay: 1000,
+  },
+  {
+    type: "output",
+    text: "  See you later!",
+  },
+  {
+    type: "output",
+    text: "",
+  },
+  {
+    type: "input",
+    text: "",
+  },
+];
+
+const examples: Record<string, Example> = {
+  example1: {
+    label: "1",
+    content: testContent,
+  },
+  example2: {
+    label: "2",
+    prompt: bubbleTeaPrompt,
+    content: bubbleTeaContent,
+  },
+};
+
+const selectedExampleConfig = computed(() => examples[selectedExample.value]);
 </script>
 
 <template>
   <div class="demo">
     <div class="demo__controls">
+      <label class="demo__control">
+        <span>Example:</span>
+        <select v-model="selectedExample">
+          <option v-for="(example, exampleId) in examples" :key="exampleId" :value="exampleId">
+            {{ example.label }}
+          </option>
+        </select>
+      </label>
       <label class="demo__control">
         <span>Theme:</span>
         <select v-model="theme">
@@ -119,7 +395,8 @@ const content: Line[] = [
       </label>
     </div>
     <terminal-element width="600px" height="360px" currentDirectory="~/terminal-element" :theme="theme"
-      :animated="animated" :loop="loop" :content="content" :typingSpeed="50" :delayAfterComplete="4000"
+      :prompt="selectedExampleConfig.prompt ?? '$'" :animated="animated" :loop="loop"
+      :content="selectedExampleConfig.content" :typingSpeed="50" :delayAfterComplete="4000"
       :delayBeforeRestart="1000" />
   </div>
 </template>
