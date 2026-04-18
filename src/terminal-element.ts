@@ -143,6 +143,7 @@ export class TerminalElement extends LitElement {
 
       --terminal-element-font-family: monospace;
       --terminal-element-font-size: 14px;
+      --terminal-element-border-radius: 10px;
       --terminal-element-box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
 
       /** UI colors */
@@ -216,7 +217,7 @@ export class TerminalElement extends LitElement {
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--terminal-element-border-color);
-      border-radius: 10px;
+      border-radius: var(--terminal-element-border-radius);
       box-shadow: var(--terminal-element-box-shadow);
     }
 
