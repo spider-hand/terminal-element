@@ -141,6 +141,7 @@ export class TerminalElement extends LitElement {
       width: fit-content;
       height: fit-content;
 
+      --terminal-element-font-family: monospace;
       --terminal-element-font-size: 14px;
       --terminal-element-box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
 
@@ -275,7 +276,7 @@ export class TerminalElement extends LitElement {
     }
 
     .terminal-element__body-content {
-      font-family: monospace;
+      font-family: var(--terminal-element-font-family);
       font-size: var(--terminal-element-font-size);
       font-weight: 400;
       color: var(--terminal-element-body-content-color);

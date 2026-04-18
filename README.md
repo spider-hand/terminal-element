@@ -183,6 +183,7 @@ content = [
 
 | Variable                                    | Default                            |
 | ------------------------------------------- | ---------------------------------- |
+| `--terminal-element-font-family`            | `monospace`                        |
 | `--terminal-element-font-size`              | `14px`                             |
 | `--terminal-element-box-shadow`             | `rgb(0 0 0 / 56%) 0 22px 70px 4px` |
 | `--terminal-element-border-color`           | `#070707`                          |
