@@ -1,7 +1,8 @@
 import { LitElement, css, html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import chroma from "chroma-js";
+
+let chromaModule: typeof import("chroma-js").default | null = null;
 
 export type ThemeType = "light" | "dark";
 
@@ -130,10 +131,21 @@ export class TerminalElement extends LitElement {
   @state() private _isProgressLineVisible = false;
   @state() private _isAnimating = false;
   @state() private _isWaitingToRestart = false;
+  @state() private _hasChromaJsLoaded = false;
 
   private _animationTimer: number | null = null;
   private _currentProgressElapsed = 0;
   private readonly _progressTickInterval = 50;
+
+  private get _hasGradientProgress() {
+    return this.content.some(
+      (line) =>
+        line.type === "progress" &&
+        line.startColor !== undefined &&
+        line.endColor !== undefined &&
+        line.startColor !== line.endColor,
+    );
+  }
 
   static styles = css`
     :host {
@@ -309,8 +321,19 @@ export class TerminalElement extends LitElement {
     this._stopAnimation();
   }
 
-  protected updated(changedProperties: PropertyValues) {
+  protected async updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    // Lazy load chroma-js only when it is needed
+    if (
+      changedProperties.has("content") &&
+      !this._hasChromaJsLoaded &&
+      this._hasGradientProgress
+    ) {
+      const m = await import("chroma-js");
+      chromaModule = m.default;
+      this._hasChromaJsLoaded = true;
+    }
 
     // Restart the animation when content changes while animated
     if (
@@ -606,7 +629,7 @@ export class TerminalElement extends LitElement {
     const incompleteChar = line.incompleteChar ?? "";
     const startColor = this._resolveProgressColor(line.startColor ?? "green");
     const endColor = this._resolveProgressColor(line.endColor ?? "green");
-    const colorScale = chroma.scale([startColor, endColor]);
+    const colorScale = chromaModule?.scale([startColor, endColor]);
     const segments: { text: string; color?: string }[] = [];
 
     if (indent > 0) {
@@ -616,7 +639,9 @@ export class TerminalElement extends LitElement {
     for (let index = 0; index < completedLength; index++) {
       segments.push({
         text: completeChar,
-        color: colorScale(length <= 1 ? 1 : index / (length - 1)).hex(),
+        color: colorScale
+          ? colorScale(length <= 1 ? 1 : index / (length - 1)).hex()
+          : endColor,
       });
     }
 
