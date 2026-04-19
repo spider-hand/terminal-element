@@ -1,0 +1,26 @@
+terminal-element[theme="catppuccin-mocha"] {
+  --terminal-element-background: #1e1e2e;
+  --terminal-element-foreground: #cdd6f4;
+  --terminal-element-caret-color: #f5e0dc;
+  --terminal-element-border-color: color-mix(
+    in srgb,
+    var(--terminal-element-background),
+    white 20%
+  );
+  --terminal-element-ansi-black: #45475a;
+  --terminal-element-ansi-black-bright: #585b70;
+  --terminal-element-ansi-red: #f38ba8;
+  --terminal-element-ansi-red-bright: #f37799;
+  --terminal-element-ansi-green: #a6e3a1;
+  --terminal-element-ansi-green-bright: #89d88b;
+  --terminal-element-ansi-yellow: #f9e2af;
+  --terminal-element-ansi-yellow-bright: #ebd391;
+  --terminal-element-ansi-blue: #89b4fa;
+  --terminal-element-ansi-blue-bright: #74a8fc;
+  --terminal-element-ansi-magenta: #f5c2e7;
+  --terminal-element-ansi-magenta-bright: #f2aede;
+  --terminal-element-ansi-cyan: #94e2d5;
+  --terminal-element-ansi-cyan-bright: #6bd7ca;
+  --terminal-element-ansi-white: #a6adc8;
+  --terminal-element-ansi-white-bright: #bac2de;
+}

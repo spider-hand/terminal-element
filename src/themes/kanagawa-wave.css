@@ -1,0 +1,26 @@
+terminal-element[theme="kanagawa-wave"] {
+  --terminal-element-background: #1f1f28;
+  --terminal-element-foreground: #dcd7ba;
+  --terminal-element-caret-color: #dcd7ba;
+  --terminal-element-border-color: color-mix(
+    in srgb,
+    var(--terminal-element-background),
+    white 20%
+  );
+  --terminal-element-ansi-black: #090618;
+  --terminal-element-ansi-black-bright: #727169;
+  --terminal-element-ansi-red: #c34043;
+  --terminal-element-ansi-red-bright: #e82424;
+  --terminal-element-ansi-green: #76946a;
+  --terminal-element-ansi-green-bright: #98bb6c;
+  --terminal-element-ansi-yellow: #c0a36e;
+  --terminal-element-ansi-yellow-bright: #e6c384;
+  --terminal-element-ansi-blue: #7e9cd8;
+  --terminal-element-ansi-blue-bright: #7fb4ca;
+  --terminal-element-ansi-magenta: #957fb8;
+  --terminal-element-ansi-magenta-bright: #938aa9;
+  --terminal-element-ansi-cyan: #6a9589;
+  --terminal-element-ansi-cyan-bright: #7aa89f;
+  --terminal-element-ansi-white: #c8c093;
+  --terminal-element-ansi-white-bright: #dcd7ba;
+}

@@ -1,7 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 
 import "./terminal-element";
+import "./themes/catppuccin-latte.css";
+import "./themes/catppuccin-mocha.css";
+import "./themes/dracula.css";
+import "./themes/gruvbox-dark.css";
+import "./themes/kanagawa-wave.css";
+import "./themes/tokyo-night.css";
 import type { TerminalElementProps } from "./terminal-element";
+
+const themes = [
+  "dark",
+  "light",
+  "catppuccin-mocha",
+  "catppuccin-latte",
+  "gruvbox-dark",
+  "tokyo-night",
+  "kanagawa-wave",
+  "dracula",
+] as const;
 
 const meta = {
   title: "TerminalElement",
@@ -23,7 +40,7 @@ const meta = {
   argTypes: {
     width: { control: "text" },
     height: { control: "text" },
-    theme: { control: "select", options: ["dark", "light"] },
+    theme: { control: "select", options: themes },
     currentDirectory: { control: "text" },
     prompt: { control: "text" },
     content: { control: "object" },

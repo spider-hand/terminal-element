@@ -26,13 +26,25 @@ npm install terminal-element
 <terminal-element></terminal-element>
 ```
 
+Additional themes are imported separately so only the themes you use are
+included by your bundler:
+
+```ts
+import "terminal-element";
+import "terminal-element/themes/cappuccin-mocha.css";
+```
+
+```html
+<terminal-element theme="cappuccin-mocha"></terminal-element>
+```
+
 ## Props
 
 | Name               | Type                  | Required | Default   | Description                                          |
 | ------------------ | --------------------- | -------- | --------- | ---------------------------------------------------- |
 | width              | `string`              | No       | `"600px"` | Width of the terminal                                |
 | height             | `string`              | No       | `"360px"` | Height of the terminal                               |
-| theme              | `"light" \| "dark"`   | No       | `"dark"`  | Theme of the terminal                                |
+| theme              | `string`              | No       | `"dark"`  | Theme of the terminal                                |
 | currentDirectory   | `string`              | No       | `""`      | Current directory displayed in header                |
 | prompt             | `string \| Segment[]` | No       | `"$"`     | Prompt symbol or styled prompt segments              |
 | content            | `Line[]`              | No       | `[]`      | Content to display (see [Line](#line) section)       |
@@ -41,6 +53,19 @@ npm install terminal-element
 | loop               | `boolean`             | No       | `false`   | Enable infinite loop animation                       |
 | delayAfterComplete | `number`              | No       | `4000`    | Delay after animation completes before clearing (ms) |
 | delayBeforeRestart | `number`              | No       | `1000`    | Delay showing empty screen before restart (ms)       |
+
+### Themes
+
+Some additional themes sourced from iTerm2 color schemes are available other than built-in `dark` and `light`:
+
+| Theme            | Import                                         |
+| ---------------- | ---------------------------------------------- |
+| Catppuccin Mocha | `terminal-element/themes/catppuccin-mocha.css` |
+| Catppuccin Latte | `terminal-element/themes/catppuccin-latte.css` |
+| Dracula          | `terminal-element/themes/dracula.css`          |
+| Gruvbox Dark     | `terminal-element/themes/gruvbox-dark.css`     |
+| Kanagawa Wave    | `terminal-element/themes/kanagawa-wave.css`    |
+| Tokyo Night      | `terminal-element/themes/tokyo-night.css`      |
 
 ### Prompt
 

@@ -1,0 +1,26 @@
+terminal-element[theme="gruvbox-dark"] {
+  --terminal-element-background: #282828;
+  --terminal-element-foreground: #ebdbb2;
+  --terminal-element-caret-color: #ebdbb2;
+  --terminal-element-border-color: color-mix(
+    in srgb,
+    var(--terminal-element-background),
+    white 20%
+  );
+  --terminal-element-ansi-black: #282828;
+  --terminal-element-ansi-black-bright: #928374;
+  --terminal-element-ansi-red: #cc241d;
+  --terminal-element-ansi-red-bright: #fb4934;
+  --terminal-element-ansi-green: #98971a;
+  --terminal-element-ansi-green-bright: #b8bb26;
+  --terminal-element-ansi-yellow: #d79921;
+  --terminal-element-ansi-yellow-bright: #fabd2f;
+  --terminal-element-ansi-blue: #458588;
+  --terminal-element-ansi-blue-bright: #83a598;
+  --terminal-element-ansi-magenta: #b16286;
+  --terminal-element-ansi-magenta-bright: #d3869b;
+  --terminal-element-ansi-cyan: #689d6a;
+  --terminal-element-ansi-cyan-bright: #8ec07c;
+  --terminal-element-ansi-white: #a89984;
+  --terminal-element-ansi-white-bright: #ebdbb2;
+}

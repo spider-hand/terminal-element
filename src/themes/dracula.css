@@ -1,0 +1,26 @@
+terminal-element[theme="dracula"] {
+  --terminal-element-background: #282a36;
+  --terminal-element-foreground: #f8f8f2;
+  --terminal-element-caret-color: #f8f8f2;
+  --terminal-element-border-color: color-mix(
+    in srgb,
+    var(--terminal-element-background),
+    white 20%
+  );
+  --terminal-element-ansi-black: #21222c;
+  --terminal-element-ansi-black-bright: #6272a4;
+  --terminal-element-ansi-red: #ff5555;
+  --terminal-element-ansi-red-bright: #ff6e6e;
+  --terminal-element-ansi-green: #50fa7b;
+  --terminal-element-ansi-green-bright: #69ff94;
+  --terminal-element-ansi-yellow: #f1fa8c;
+  --terminal-element-ansi-yellow-bright: #ffffa5;
+  --terminal-element-ansi-blue: #bd93f9;
+  --terminal-element-ansi-blue-bright: #d6acff;
+  --terminal-element-ansi-magenta: #ff79c6;
+  --terminal-element-ansi-magenta-bright: #ff92df;
+  --terminal-element-ansi-cyan: #8be9fd;
+  --terminal-element-ansi-cyan-bright: #a4ffff;
+  --terminal-element-ansi-white: #f8f8f2;
+  --terminal-element-ansi-white-bright: #ffffff;
+}

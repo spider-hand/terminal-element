@@ -4,7 +4,15 @@ import { customElement, property, state } from "lit/decorators.js";
 
 let chromaModule: typeof import("chroma-js").default | null = null;
 
-export type ThemeType = "light" | "dark";
+export type ThemeType =
+  | "dark"
+  | "light"
+  | "catppuccin-latte"
+  | "catppuccin-mocha"
+  | "dracula"
+  | "gruvbox-dark"
+  | "kanagawa-wave"
+  | "tokyo-night";
 
 export type AnsiColorType =
   | "black"
@@ -159,7 +167,7 @@ export class TerminalElement extends LitElement {
       --terminal-element-border-color: color-mix(
         in srgb,
         var(--terminal-element-background),
-        white 25%
+        white 20%
       );
       --terminal-element-box-shadow: rgb(0 0 0 / 56%) 0 22px 70px 4px;
 
@@ -195,7 +203,7 @@ export class TerminalElement extends LitElement {
       --terminal-element-border-color: color-mix(
         in srgb,
         var(--terminal-element-background),
-        black 25%
+        black 16%
       );
 
       /** ANSI colors */

@@ -10,7 +10,8 @@
     ".": {
       "types": "./dist/types/terminal-element.d.ts",
       "import": "./dist/terminal-element.es.js"
-    }
+    },
+    "./themes/*.css": "./dist/themes/*.css"
   },
   "files": [
     "dist",
@@ -19,7 +20,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/copy-themes.js",
     "build:types": "tsc -p tsconfig.build.types.json",
     "build:all": "pnpm run build && pnpm run build:types",
     "preview": "vite preview",

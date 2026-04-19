@@ -1,0 +1,26 @@
+terminal-element[theme="catppuccin-latte"] {
+  --terminal-element-background: #eff1f5;
+  --terminal-element-foreground: #4c4f69;
+  --terminal-element-caret-color: #dc8a78;
+  --terminal-element-border-color: color-mix(
+    in srgb,
+    var(--terminal-element-background),
+    black 16%
+  );
+  --terminal-element-ansi-black: #5c5f77;
+  --terminal-element-ansi-black-bright: #6c6f85;
+  --terminal-element-ansi-red: #d20f39;
+  --terminal-element-ansi-red-bright: #de293e;
+  --terminal-element-ansi-green: #40a02b;
+  --terminal-element-ansi-green-bright: #49af3d;
+  --terminal-element-ansi-yellow: #df8e1d;
+  --terminal-element-ansi-yellow-bright: #eea02d;
+  --terminal-element-ansi-blue: #1e66f5;
+  --terminal-element-ansi-blue-bright: #456eff;
+  --terminal-element-ansi-magenta: #ea76cb;
+  --terminal-element-ansi-magenta-bright: #fe85d8;
+  --terminal-element-ansi-cyan: #179299;
+  --terminal-element-ansi-cyan-bright: #2d9fa8;
+  --terminal-element-ansi-white: #acb0be;
+  --terminal-element-ansi-white-bright: #bcc0cc;
+}
