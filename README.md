@@ -1,8 +1,7 @@
 # terminal-element
 
-![demo1](https://github.com/user-attachments/assets/7e96e50f-ca82-4bd5-a5e2-0a215ae30b12)
-
-![demo2](https://github.com/user-attachments/assets/2bbdac1f-e8a5-4da7-a046-28a63d7fe85f)
+<img width="1200" height="720" alt="demo_1" src="https://github.com/user-attachments/assets/02711bf5-896f-4334-a984-7143c5b266bf" />
+<img width="1200" height="720" alt="demo_2" src="https://github.com/user-attachments/assets/600fc442-c576-42e1-a20c-5772ca4a45a6" />
 
 ![npm version](https://img.shields.io/npm/v/terminal-element) ![npm downloads](https://img.shields.io/npm/dm/terminal-element) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/terminal-element) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![codecov](https://codecov.io/gh/spider-hand/terminal-element/graph/badge.svg?token=3TNWF0ZMDS)](https://codecov.io/gh/spider-hand/terminal-element) ![Lit](https://img.shields.io/badge/lit-%23324FFF.svg?&logo=lit&logoColor=white)
 

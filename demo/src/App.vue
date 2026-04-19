@@ -1,12 +1,29 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import "terminal-element";
+import "terminal-element/themes/catppuccin-latte.css";
+import "terminal-element/themes/catppuccin-mocha.css";
+import "terminal-element/themes/dracula.css";
+import "terminal-element/themes/gruvbox-dark.css";
+import "terminal-element/themes/kanagawa-wave.css";
+import "terminal-element/themes/tokyo-night.css";
 // import "../../dist/terminal-element.es.js";
 import type {
   Line,
   Prompt,
   ThemeType,
 } from "terminal-element";
+
+const themes: { label: string; value: ThemeType }[] = [
+  { label: "Dark", value: "dark" },
+  { label: "Light", value: "light" },
+  { label: "Catppuccin Mocha", value: "catppuccin-mocha" },
+  { label: "Catppuccin Latte", value: "catppuccin-latte" },
+  { label: "Gruvbox Dark", value: "gruvbox-dark" },
+  { label: "Tokyo Night", value: "tokyo-night" },
+  { label: "Kanagawa Wave", value: "kanagawa-wave" },
+  { label: "Dracula", value: "dracula" },
+];
 
 const theme = ref<ThemeType>("dark");
 const animated = ref(true);
@@ -381,8 +398,9 @@ const selectedExampleConfig = computed(() => examples[selectedExample.value]);
       <label class="demo__control">
         <span>Theme:</span>
         <select v-model="theme">
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
+          <option v-for="themeOption in themes" :key="themeOption.value" :value="themeOption.value">
+            {{ themeOption.label }}
+          </option>
         </select>
       </label>
       <label class="demo__control">
