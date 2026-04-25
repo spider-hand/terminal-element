@@ -113,6 +113,7 @@ export interface TerminalElementProps {
   prompt?: Prompt;
   content?: Line[];
   animated?: boolean;
+  autoStart?: boolean;
   typingSpeed?: number;
   loop?: boolean;
   delayAfterComplete?: number;
@@ -128,6 +129,7 @@ export class TerminalElement extends LitElement {
   @property({ type: String }) prompt: Prompt = "$";
   @property({ type: Array }) content: Line[] = [];
   @property({ type: Boolean }) animated = false;
+  @property({ type: Boolean }) autoStart = true;
   @property({ type: Number }) typingSpeed = 100;
   @property({ type: Boolean }) loop = false;
   @property({ type: Number }) delayAfterComplete = 4000;
@@ -139,6 +141,7 @@ export class TerminalElement extends LitElement {
   @state() private _isProgressLineVisible = false;
   @state() private _isAnimating = false;
   @state() private _isWaitingToRestart = false;
+  @state() private _hasAnimationStarted = false;
   @state() private _hasChromaJsLoaded = false;
 
   private _animationTimer: number | null = null;
@@ -311,7 +314,7 @@ export class TerminalElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.animated) {
+    if (this.animated && this.autoStart) {
       this._startAnimation();
     }
   }
@@ -319,6 +322,48 @@ export class TerminalElement extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this._stopAnimation();
+  }
+
+  protected willUpdate(changedProperties: PropertyValues) {
+    if (
+      changedProperties.has("animated") &&
+      changedProperties.get("animated") !== undefined
+    ) {
+      if (!this.animated) {
+        this._stopAnimation();
+        return;
+      }
+
+      // Restart the animation from the beginning if animation and auto-start are both enabled
+      if (this.autoStart) {
+        this._restartAnimation();
+        return;
+      }
+    }
+
+    if (
+      changedProperties.has("autoStart") &&
+      changedProperties.get("autoStart") !== undefined &&
+      this.animated &&
+      this.autoStart
+    ) {
+      // Restart the animation from the beginning if animation and auto-start are both enabled
+      this._restartAnimation();
+      return;
+    }
+
+    if (
+      changedProperties.has("content") &&
+      changedProperties.get("content") !== undefined &&
+      this.animated
+    ) {
+      // If auto-start is disabled, just stop the animation and let the user manually start it again
+      if (this.autoStart) {
+        this._restartAnimation();
+      } else {
+        this._stopAnimation();
+      }
+    }
   }
 
   protected async updated(changedProperties: PropertyValues) {
@@ -334,27 +379,43 @@ export class TerminalElement extends LitElement {
       chromaModule = m.default;
       this._hasChromaJsLoaded = true;
     }
-
-    // Restart the animation when content changes while animated
-    if (
-      changedProperties.has("content") &&
-      this.animated &&
-      changedProperties.get("content") !== undefined
-    ) {
-      this._stopAnimation();
-      this._startAnimation();
-    }
   }
 
-  private _startAnimation() {
+  public startAnimation() {
+    if (!this.animated) return;
+
+    this._restartAnimation();
+  }
+
+  private _restartAnimation() {
+    this._stopAnimation();
+    this._startAnimation();
+  }
+
+  private _resetAnimationState() {
     this._currentLineIndex = 0;
     this._currentCharInLine = 0;
     this._currentProgressElapsed = 0;
     this._currentProgressRatio = 0;
     this._isProgressLineVisible = false;
-    this._isAnimating = true;
     this._isWaitingToRestart = false;
+  }
+
+  private _startAnimation() {
+    this._resetAnimationState();
+    this._hasAnimationStarted = true;
+    this._isAnimating = true;
     this._processCurrentLine();
+  }
+
+  private _stopAnimation() {
+    if (this._animationTimer !== null) {
+      clearTimeout(this._animationTimer);
+      this._animationTimer = null;
+    }
+    this._resetAnimationState();
+    this._hasAnimationStarted = false;
+    this._isAnimating = false;
   }
 
   private _processCurrentLine() {
@@ -472,22 +533,14 @@ export class TerminalElement extends LitElement {
     this._processCurrentLine();
   }
 
-  private _stopAnimation() {
-    if (this._animationTimer !== null) {
-      clearTimeout(this._animationTimer);
-      this._animationTimer = null;
-    }
-    this._currentProgressElapsed = 0;
-    this._currentProgressRatio = 0;
-    this._isProgressLineVisible = false;
-    this._isAnimating = false;
-    this._isWaitingToRestart = false;
-  }
-
   private _renderContent() {
     // If animation is disabled, render all content
     if (!this.animated) {
       return this._renderFullContent();
+    }
+
+    if (!this._hasAnimationStarted) {
+      return null;
     }
 
     // If waiting to restart, render empty

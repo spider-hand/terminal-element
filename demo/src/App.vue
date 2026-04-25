@@ -27,8 +27,17 @@ const themes: { label: string; value: ThemeType }[] = [
 
 const theme = ref<ThemeType>("dark");
 const animated = ref(true);
+// const autoStart = ref(true);
 const loop = ref(true);
 const selectedExample = ref<string>("example1");
+
+/**  
+type TerminalElementInstance = HTMLElement & {
+  startAnimation: () => void;
+};
+
+const terminalElementRef = ref<TerminalElementInstance | null>(null);
+*/
 
 type Example = {
   label: string;
@@ -382,6 +391,12 @@ const examples: Record<string, Example> = {
 };
 
 const selectedExampleConfig = computed(() => examples[selectedExample.value]);
+
+/**
+const handleStartAnimation = () => {
+  terminalElementRef.value?.startAnimation();
+};
+*/
 </script>
 
 <template>
@@ -407,13 +422,21 @@ const selectedExampleConfig = computed(() => examples[selectedExample.value]);
         <span>Animated:</span>
         <input type="checkbox" v-model="animated" />
       </label>
+      <!-- <label class="demo__control" v-show="animated">
+        <span>Auto start:</span>
+        <input type="checkbox" v-model="autoStart" />
+      </label> -->
       <label class="demo__control" v-show="animated">
         <span>Loop:</span>
         <input type="checkbox" v-model="loop" />
       </label>
+      <!-- <button class="demo__button" type="button" @click="handleStartAnimation" :disabled="!animated">
+        Start animation
+      </button> -->
     </div>
-    <terminal-element width="600px" height="360px" currentDirectory="~/terminal-element" :theme="theme"
-      :prompt="selectedExampleConfig.prompt ?? '$'" :animated="animated" :loop="loop"
+    <!-- TODO: Pass autoStart -->
+    <terminal-element ref="terminalElementRef" width="600px" height="360px" currentDirectory="~/terminal-element"
+      :theme="theme" :prompt="selectedExampleConfig.prompt ?? '$'" :animated="animated" :loop="loop"
       :content="selectedExampleConfig.content" :typingSpeed="50" :delayAfterComplete="4000"
       :delayBeforeRestart="1000" />
   </div>
@@ -445,4 +468,19 @@ const selectedExampleConfig = computed(() => examples[selectedExample.value]);
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/**
+.demo__button {
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.demo__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+  */
 </style>

@@ -30,28 +30,29 @@ included by your bundler:
 
 ```ts
 import "terminal-element";
-import "terminal-element/themes/cappuccin-mocha.css";
+import "terminal-element/themes/catppuccin-mocha.css";
 ```
 
 ```html
-<terminal-element theme="cappuccin-mocha"></terminal-element>
+<terminal-element theme="catppuccin-mocha"></terminal-element>
 ```
 
 ## Props
 
-| Name               | Type                  | Required | Default   | Description                                          |
-| ------------------ | --------------------- | -------- | --------- | ---------------------------------------------------- |
-| width              | `string`              | No       | `"600px"` | Width of the terminal                                |
-| height             | `string`              | No       | `"360px"` | Height of the terminal                               |
-| theme              | `string`              | No       | `"dark"`  | Theme of the terminal                                |
-| currentDirectory   | `string`              | No       | `""`      | Current directory displayed in header                |
-| prompt             | `string \| Segment[]` | No       | `"$"`     | Prompt symbol or styled prompt segments              |
-| content            | `Line[]`              | No       | `[]`      | Content to display (see [Line](#line) section)       |
-| animated           | `boolean`             | No       | `false`   | Enable typing animation                              |
-| typingSpeed        | `number`              | No       | `100`     | Typing speed in ms per character                     |
-| loop               | `boolean`             | No       | `false`   | Enable infinite loop animation                       |
-| delayAfterComplete | `number`              | No       | `4000`    | Delay after animation completes before clearing (ms) |
-| delayBeforeRestart | `number`              | No       | `1000`    | Delay showing empty screen before restart (ms)       |
+| Name               | Type                  | Required | Default   | Description                                                         |
+| ------------------ | --------------------- | -------- | --------- | ------------------------------------------------------------------- |
+| width              | `string`              | No       | `"600px"` | Width of the terminal                                               |
+| height             | `string`              | No       | `"360px"` | Height of the terminal                                              |
+| theme              | `string`              | No       | `"dark"`  | Theme of the terminal                                               |
+| currentDirectory   | `string`              | No       | `""`      | Current directory displayed in header                               |
+| prompt             | `string \| Segment[]` | No       | `"$"`     | Prompt symbol or styled prompt segments                             |
+| content            | `Line[]`              | No       | `[]`      | Content to display (see [Line](#line) section)                      |
+| animated           | `boolean`             | No       | `false`   | Render content progressively with animation                         |
+| autoStart          | `boolean`             | No       | `true`    | Start or restart animation automatically when `animated` is enabled |
+| typingSpeed        | `number`              | No       | `100`     | Typing speed in ms per character                                    |
+| loop               | `boolean`             | No       | `false`   | Enable infinite loop animation                                      |
+| delayAfterComplete | `number`              | No       | `4000`    | Delay after animation completes before clearing (ms)                |
+| delayBeforeRestart | `number`              | No       | `1000`    | Delay showing empty screen before restart (ms)                      |
 
 ### Themes
 
@@ -202,6 +203,14 @@ content = [
   },
 ];
 ```
+
+## Methods
+
+▸ **startAnimation**(): *void*
+
+Starts animation manually.
+
+---
 
 ## Styling
 

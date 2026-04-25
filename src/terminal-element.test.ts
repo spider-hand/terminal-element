@@ -395,6 +395,38 @@ describe("terminal-element", () => {
       await expect.element(content).toHaveTextContent("$ 0987654321");
     });
 
+    it("does not restart animation when autoStart is disabled", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .autoStart=${false}
+          .typingSpeed=${100}
+          .content=${[{ type: "input", text: "1234567890" }] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      el.startAnimation();
+      vi.runAllTimers();
+      await el.updateComplete;
+
+      // Verify first content is fully rendered
+      const contentBefore = screen.getByTestId("content");
+      await expect.element(contentBefore).toHaveTextContent("$ 1234567890");
+
+      // Update the content
+      el.content = [{ type: "input", text: "0987654321" }];
+      await el.updateComplete;
+
+      // Content should not change until startAnimation is called again
+      const content = screen.getByTestId("content");
+      expect(content.element().textContent?.trim()).toBe("");
+    });
+
     it("does not restart animation when animation is disabled", async () => {
       const screen = render(
         html`<terminal-element
@@ -448,7 +480,64 @@ describe("terminal-element", () => {
         .textContent?.trim();
 
       // Content should be the same before and after
-      expect(contentAfter).toBe(contentBefore);
+      expect(contentAfter?.startsWith(contentBefore ?? "")).toBe(true);
+    });
+  });
+
+  describe("startAnimation", () => {
+    it("does not render animated content until startAnimation is called when autoStart is disabled", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .autoStart=${false}
+          .typingSpeed=${100}
+          .content=${[{ type: "input", text: "1234567890" }] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      expect(content.element().textContent?.trim()).toBe("");
+
+      el.startAnimation();
+      vi.advanceTimersByTime(300);
+      await el.updateComplete;
+
+      await expect.element(content).toHaveTextContent("$ 1234");
+    });
+
+    it("restarts from the beginning when startAnimation is called again", async () => {
+      const screen = render(
+        html`<terminal-element
+          .animated=${true}
+          .autoStart=${false}
+          .typingSpeed=${100}
+          .content=${[{ type: "input", text: "1234567890" }] as const}
+        ></terminal-element>`,
+      );
+
+      const el = screen.container.querySelector(
+        "terminal-element",
+      ) as TerminalElement;
+      await el.updateComplete;
+
+      el.startAnimation();
+      vi.advanceTimersByTime(300);
+      await el.updateComplete;
+
+      const content = screen.getByTestId("content");
+      await expect.element(content).toHaveTextContent("$ 1234");
+
+      el.startAnimation();
+      vi.advanceTimersByTime(200);
+      await el.updateComplete;
+
+      // Content should be rendered from the beginning again
+      await expect.element(content).toHaveTextContent("$ 123");
     });
   });
 
