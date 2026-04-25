@@ -9,6 +9,7 @@ import "terminal-element/themes/kanagawa-wave.css";
 import "terminal-element/themes/tokyo-night.css";
 // import "../../dist/terminal-element.es.js";
 import type {
+  TerminalElement,
   Line,
   Prompt,
   ThemeType,
@@ -27,17 +28,10 @@ const themes: { label: string; value: ThemeType }[] = [
 
 const theme = ref<ThemeType>("dark");
 const animated = ref(true);
-// const autoStart = ref(true);
+const autoStart = ref(true);
 const loop = ref(true);
 const selectedExample = ref<string>("example1");
-
-/**  
-type TerminalElementInstance = HTMLElement & {
-  startAnimation: () => void;
-};
-
-const terminalElementRef = ref<TerminalElementInstance | null>(null);
-*/
+const terminalElementRef = ref<TerminalElement | null>(null);
 
 type Example = {
   label: string;
@@ -392,11 +386,9 @@ const examples: Record<string, Example> = {
 
 const selectedExampleConfig = computed(() => examples[selectedExample.value]);
 
-/**
 const handleStartAnimation = () => {
   terminalElementRef.value?.startAnimation();
 };
-*/
 </script>
 
 <template>
@@ -422,22 +414,21 @@ const handleStartAnimation = () => {
         <span>Animated:</span>
         <input type="checkbox" v-model="animated" />
       </label>
-      <!-- <label class="demo__control" v-show="animated">
+      <label class="demo__control" v-show="animated">
         <span>Auto start:</span>
         <input type="checkbox" v-model="autoStart" />
-      </label> -->
+      </label>
       <label class="demo__control" v-show="animated">
         <span>Loop:</span>
         <input type="checkbox" v-model="loop" />
       </label>
-      <!-- <button class="demo__button" type="button" @click="handleStartAnimation" :disabled="!animated">
+      <button class="demo__button" type="button" @click="handleStartAnimation" :disabled="!animated">
         Start animation
-      </button> -->
+      </button>
     </div>
-    <!-- TODO: Pass autoStart -->
     <terminal-element ref="terminalElementRef" width="600px" height="360px" currentDirectory="~/terminal-element"
-      :theme="theme" :prompt="selectedExampleConfig.prompt ?? '$'" :animated="animated" :loop="loop"
-      :content="selectedExampleConfig.content" :typingSpeed="50" :delayAfterComplete="4000"
+      :theme="theme" :prompt="selectedExampleConfig.prompt ?? '$'" :animated="animated" :autoStart="autoStart"
+      :loop="loop" :content="selectedExampleConfig.content" :typingSpeed="50" :delayAfterComplete="4000"
       :delayBeforeRestart="1000" />
   </div>
 </template>
@@ -469,7 +460,6 @@ const handleStartAnimation = () => {
   border-radius: 4px;
 }
 
-/**
 .demo__button {
   padding: 4px 10px;
   border: 1px solid #ccc;
@@ -482,5 +472,4 @@ const handleStartAnimation = () => {
   cursor: not-allowed;
   opacity: 0.6;
 }
-  */
 </style>
